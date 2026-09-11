@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Controle Luiz</title>
+<title>Controle Luiz - L7 Control</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -89,15 +89,15 @@ h1{color:#d4af37;font-size:30px;}
 .fab{position:fixed;right:20px;bottom:105px;width:70px;height:70px;border-radius:50%;background:#d4af37;border:none;font-size:30px;cursor:pointer;box-shadow:0 0 20px rgba(212,175,55,.4);z-index:50;}
 
 /* Menu Inferior */
-nav{position:fixed;bottom:0;left:0;right:0;height:85px;background:#111;display:flex;justify-space-around;align-items:center;border-top:1px solid #2d2d2d;z-index:60;padding-bottom:5px;}
+nav{position:fixed;bottom:0;left:0;right:0;height:85px;background:#111;display:flex;justify-content:space-around;align-items:center;border-top:1px solid #2d2d2d;z-index:60;padding-bottom:5px;}
 nav div{display:flex;flex-direction:column;align-items:center;cursor:pointer;font-size:9px;color:#888;transition:color .2s;flex:1;text-align:center;}
 nav div.ativo{color:#d4af37;}
 nav i{font-size:18px;margin-bottom:5px;}
 
 footer{text-align:center;padding:30px;font-size:13px;color:#999;}
 label{font-size:13px;color:#ccc;}
-input,select{width:100%;padding:15px;border-radius:12px;margin:8px 0 18px;border:none;background:#222;color:white;font-size:15px;}
-input:focus,select:focus{outline:2px solid #d4af37;}
+input,select,textarea{width:100%;padding:15px;border-radius:12px;margin:8px 0 18px;border:none;background:#222;color:white;font-size:15px;}
+input:focus,select:focus,textarea:focus{outline:2px solid #d4af37;}
 .modal-bg{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#000000dd;z-index:999;overflow:auto;}
 .modal-box{background:#171717;margin:25px;padding:25px;border-radius:25px;box-shadow:0 0 25px rgba(212,175,55,.25);}
 .btn-primario{width:100%;padding:16px;background:#d4af37;color:#000;font-size:18px;font-weight:bold;border:none;border-radius:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;}
@@ -109,7 +109,7 @@ input:focus,select:focus{outline:2px solid #d4af37;}
 .transacao .obs{font-size:12px;color:#d4af37;margin-top:2px;font-style:italic;}
 .transacao .data{font-size:12px;color:#999;margin-top:3px;}
 .vazio{text-align:center;color:#777;padding:40px 20px;font-size:14px;}
-.chart-box{background:#171717;border-radius:20px;padding:20px;margin:0 20px 20px;}
+.chart-box{background:#171717;border-radius:20px;padding:20px;margin:0 20px 20px;box-shadow:0 0 15px rgba(0,0,0,0.5);}
 .insight{background:#171717;border-radius:18px;padding:16px 18px;margin-bottom:14px;display:flex;gap:14px;align-items:flex-start;}
 .insight i{font-size:20px;color:#d4af37;margin-top:2px;}
 .insight .txt{font-size:14px;color:#ddd;line-height:1.4;}
@@ -117,6 +117,80 @@ input:focus,select:focus{outline:2px solid #d4af37;}
 .config-item .cab{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-weight:600;}
 .config-item input{margin:0;}
 .alerta-salvo{background:#4CAF50;color:white;padding:12px;border-radius:10px;text-align:center;margin-bottom:15px;font-weight:600;display:none;font-size:14px;}
+
+/* Estilos Específicos do L7-IA */
+.ia-chat-container {
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.ia-box-msg {
+  background: #171717;
+  border-radius: 20px;
+  padding: 18px;
+  border-left: 4px solid #d4af37;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+.ia-box-msg.usuario {
+  border-left: 4px solid #03A9F4;
+  background: #1f2833;
+}
+.ia-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-weight: 700;
+  color: #d4af37;
+}
+.ia-header i { font-size: 20px; }
+.ia-body {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #eee;
+}
+.ia-sugestoes-rapidas {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 10px 0;
+  margin-bottom: 15px;
+}
+.chip-sugestao {
+  background: #222;
+  border: 1px solid #d4af37;
+  color: #d4af37;
+  padding: 10px 16px;
+  border-radius: 25px;
+  font-size: 12px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.chip-sugestao:hover {
+  background: #d4af37;
+  color: #000;
+}
+.ia-input-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+.ia-input-group input {
+  margin: 0;
+  flex: 1;
+}
+.btn-ia-enviar {
+  background: #d4af37;
+  color: #000;
+  border: none;
+  border-radius: 12px;
+  padding: 0 20px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 16px;
+}
 </style>
 </head>
 <body>
@@ -171,9 +245,9 @@ input:focus,select:focus{outline:2px solid #d4af37;}
 
 <!-- ===================== TELA GRÁFICOS ===================== -->
 <div id="tela-graficos" class="tela">
-  <h2 class="titulo">Relatórios Anuais e Mensais</h2>
-  <div class="chart-box"><canvas id="graficoAnualComparativo"></canvas></div>
+  <h2 class="titulo">Relatórios Financeiros</h2>
   <div class="chart-box"><canvas id="graficoCategorias"></canvas></div>
+  <div class="chart-box"><canvas id="graficoAnualComparativo"></canvas></div>
   <div class="chart-box"><canvas id="graficoMetodosPagamento"></canvas></div>
   <div class="chart-box"><canvas id="graficoPatrimonioHistorico"></canvas></div>
 </div>
@@ -208,10 +282,25 @@ input:focus,select:focus{outline:2px solid #d4af37;}
   <div class="lista" id="lista-investimentos-historico"></div>
 </div>
 
-<!-- ===================== TELA INSIGHTS ===================== -->
-<div id="tela-insights" class="tela">
-  <h2 class="titulo">Insights (Mês Atual)</h2>
-  <div class="lista" id="lista-insights"></div>
+<!-- ===================== TELA L7-IA (NOVA ABA INTERATIVA) ===================== -->
+<div id="tela-ia" class="tela">
+  <h2 class="titulo"><i class="fa-solid fa-robot" style="color:#d4af37;"></i> L7-IA · Assistente Inteligente</h2>
+  
+  <div class="ia-chat-container">
+    <div class="ia-sugestoes-rapidas">
+      <div class="chip-sugestao" onclick="perguntarIaPredefinida('Posso fazer uma conta mensal no valor de R$ 500,00?')">💰 Posso assumir +R$ 500/mês?</div>
+      <div class="chip-sugestao" onclick="perguntarIaPredefinida('Como está minha saúde financeira este mês?')">📊 Análise da minha saúde financeira</div>
+      <div class="chip-sugestao" onclick="perguntarIaPredefinida('Quero comprar um carro novo. Como me planejar?')">🚗 Quero planejar comprar um carro</div>
+      <div class="chip-sugestao" onclick="perguntarIaPredefinida('Quero comprar um apartamento ou terreno. O que sugerir?')">🏠 Planejar compra de imóvel</div>
+    </div>
+
+    <div id="ia-historico-chat"></div>
+
+    <div class="ia-input-group">
+      <input type="text" id="input-ia-pergunta" placeholder="Pergunte algo (ex: Posso gastar R$ 300 com um curso?)..." onkeypress="tratarKeyPressIa(event)">
+      <button class="btn-ia-enviar" onclick="enviarPerguntaIa()"><i class="fa-solid fa-paper-plane"></i></button>
+    </div>
+  </div>
 </div>
 
 <!-- ===================== TELA CONFIG ===================== -->
@@ -374,20 +463,20 @@ input:focus,select:focus{outline:2px solid #d4af37;}
   <div id="nav-receitas" onclick="mostrarTela('receitas')"><i class="fa-solid fa-money-bill-wave"></i><span>Lançamentos</span></div>
   <div id="nav-graficos" onclick="mostrarTela('graficos')"><i class="fa-solid fa-chart-pie"></i><span>Gráficos</span></div>
   <div id="nav-patrimonio" onclick="mostrarTela('patrimonio')"><i class="fa-solid fa-vault"></i><span>Patrimônio</span></div>
-  <div id="nav-insights" onclick="mostrarTela('insights')"><i class="fa-solid fa-lightbulb"></i><span>Insights</span></div>
+  <div id="nav-ia" onclick="mostrarTela('ia')"><i class="fa-solid fa-robot"></i><span>L7-IA</span></div>
   <div id="nav-config" onclick="mostrarTela('config')"><i class="fa-solid fa-gear"></i><span>Config.</span></div>
   <div id="nav-dev" onclick="mostrarTela('dev')"><i class="fa-solid fa-code"></i><span>Dev</span></div>
 </nav>
 
 <footer>
   Controle Luiz<br>
-  Versão 3.3<br><br>
+  Versão 4.0 (Com L7-IA)<br><br>
   Desenvolvido por <b>Luiz Costa</b>
 </footer>
 
 <script>
 /* =========================================================
-   CONTROLE LUIZ — lógica completa (v3.3 com Descrição Livre)
+   CONTROLE LUIZ — L7 Control v4.0 (com L7-IA e Gráficos Limpos)
    ========================================================= */
 
 const CHAVE_DADOS = "controleLuiz_dados_v3";
@@ -448,7 +537,7 @@ const CATEGORIAS_PADRAO = {
 let dataFiltro = new Date();
 let dados = carregarDados();
 
-// Referência global para os gráficos
+// Referências globais dos gráficos
 let graficoAnualChart = null;
 let graficoCategoriasChart = null;
 let graficoMetodosChart = null;
@@ -549,7 +638,7 @@ function mostrarTela(nome){
   if(nome==="receitas") renderizarTransacoes();
   if(nome==="graficos") renderizarGraficos();
   if(nome==="patrimonio") renderizarPatrimonio();
-  if(nome==="insights") renderizarInsights();
+  if(nome==="ia") iniciarAbaIa();
   if(nome==="config") renderizarConfig();
 }
 
@@ -766,7 +855,7 @@ function atualizarTudo(){
   if(telaAtiva==="receitas") renderizarTransacoes();
   if(telaAtiva==="graficos") renderizarGraficos();
   if(telaAtiva==="patrimonio") renderizarPatrimonio();
-  if(telaAtiva==="insights") renderizarInsights();
+  if(telaAtiva==="ia") iniciarAbaIa();
   if(telaAtiva==="config") renderizarConfig();
 }
 
@@ -914,7 +1003,7 @@ function salvarAjustePatrimonial(){
   }
 }
 
-// ---------- RENDER: GRÁFICOS ----------
+// ---------- RENDER: GRÁFICOS (DESIGN REFINADO & LIMPO) ----------
 function renderizarGraficos(){
   const anoFiltro = dataFiltro.getFullYear();
   const mesesAbreviados = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
@@ -954,27 +1043,87 @@ function renderizarGraficos(){
   }
 
   const transacoesDoMes = filtrarTransacoesDoPeriodo();
-  
+
+  // --- GRÁFICO 1: PIZZA / DONUT DE CATEGORIAS (OTIMIZADO TOP 5 + OUTROS) ---
+  const ctxCategorias = document.getElementById("graficoCategorias").getContext("2d");
+  if(graficoCategoriasChart) graficoCategoriasChart.destroy();
+
   const nomesDespesa = Object.keys(dados.categorias).filter(n=>dados.categorias[n].tipo==="despesa");
-  const categoriasAtivas = [];
-  const valoresAtivos = [];
+  const listaGastos = [];
+  let totalGastosMes = 0;
+
   nomesDespesa.forEach(nome => {
     const gasto = gastoPorCategoriaNoPeriodo(nome, transacoesDoMes);
     if(gasto > 0) {
-      categoriasAtivas.push(nome);
-      valoresAtivos.push(gasto);
+      listaGastos.push({ nome, gasto });
+      totalGastosMes += gasto;
     }
   });
 
-  const metodosDisponiveis = ["PIX", "Débito", "Crédito", "VA/VR", "Dinheiro", "Boleto", "Débito Automático"];
-  const somaPorMetodo = Array(metodosDisponiveis.length).fill(0);
-  transacoesDoMes.filter(t => t.tipo === "despesa").forEach(t => {
-    const formaNormalizada = t.forma || "PIX";
-    const idx = metodosDisponiveis.indexOf(formaNormalizada);
-    if(idx !== -1) somaPorMetodo[idx] += t.valor;
-  });
+  if(listaGastos.length === 0) {
+    graficoCategoriasChart = new Chart(ctxCategorias, {
+      type: "doughnut",
+      data: { labels: ["Sem registros no mês"], datasets: [{ data: [1], backgroundColor: ["#222"] }] },
+      options: { plugins: { title: { display: true, text: "Nenhum gasto registrado neste mês", color: "#888" } } }
+    });
+  } else {
+    // Ordena do maior para o menor
+    listaGastos.sort((a,b) => b.gasto - a.gasto);
 
-  // --- GRÁFICO 1 ---
+    const topCategorias = listaGastos.slice(0, 5);
+    const outrasCategorias = listaGastos.slice(5);
+
+    const labelsAtivas = topCategorias.map(item => item.nome);
+    const valoresAtivos = topCategorias.map(item => item.gasto);
+
+    if(outrasCategorias.length > 0) {
+      const somaOutros = outrasCategorias.reduce((soma, item) => soma + item.gasto, 0);
+      labelsAtivas.push("Outras categorias");
+      valoresAtivos.push(somaOutros);
+    }
+
+    const coresElegantes = ["#d4af37", "#4CAF50", "#03A9F4", "#E91E63", "#FF9800", "#795548"];
+
+    graficoCategoriasChart = new Chart(ctxCategorias, {
+      type: "doughnut",
+      data: {
+        labels: labelsAtivas,
+        datasets: [{
+          data: valoresAtivos,
+          backgroundColor: coresElegantes.slice(0, labelsAtivas.length),
+          borderWidth: 2,
+          borderColor: "#171717"
+        }]
+      },
+      options: {
+        cutout: '65%',
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: { color: "#eee", font: { size: 12 }, padding: 15 }
+          },
+          title: {
+            display: true,
+            text: `Top Maiores Despesas (${formatarMoeda(totalGastosMes)})`,
+            color: "#d4af37",
+            font: { size: 15, weight: 'bold' }
+          },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                const val = context.raw;
+                const pct = ((val / totalGastosMes) * 100).toFixed(1);
+                return ` ${context.label}: ${formatarMoeda(val)} (${pct}%)`;
+              }
+            }
+          }
+        }
+      }
+    });
+  }
+
+  // --- GRÁFICO 2: FLUXO DE CAIXA ANUAL ---
   const ctxAnual = document.getElementById("graficoAnualComparativo").getContext("2d");
   if(graficoAnualChart) graficoAnualChart.destroy();
   graficoAnualChart = new Chart(ctxAnual, {
@@ -982,8 +1131,8 @@ function renderizarGraficos(){
     data: {
       labels: mesesAbreviados,
       datasets: [
-        { label: "Receitas", data: receitasMensais, backgroundColor: "#4CAF50" },
-        { label: "Despesas", data: despesasMensais, backgroundColor: "#F44336" }
+        { label: "Receitas", data: receitasMensais, backgroundColor: "#4CAF50", borderRadius: 4 },
+        { label: "Despesas", data: despesasMensais, backgroundColor: "#F44336", borderRadius: 4 }
       ]
     },
     options: {
@@ -993,31 +1142,22 @@ function renderizarGraficos(){
     }
   });
 
-  // --- GRÁFICO 2 ---
-  const ctxCategorias = document.getElementById("graficoCategorias").getContext("2d");
-  if(graficoCategoriasChart) graficoCategoriasChart.destroy();
-  if(valoresAtivos.length === 0) {
-    graficoCategoriasChart = new Chart(ctxCategorias, {
-      type: "doughnut",
-      data: { labels: ["Sem registros no mês"], datasets: [{ data: [1], backgroundColor: ["#222"] }] },
-      options: { plugins: { title: { display: true, text: "Nenhum gasto registrado neste mês", color: "#888" } } }
-    });
-  } else {
-    graficoCategoriasChart = new Chart(ctxCategorias, {
-      type: "doughnut",
-      data: { labels: categoriasAtivas, datasets: [{ data: valoresAtivos, backgroundColor: ["#d4af37","#4CAF50","#F44336","#03A9F4","#FFC107","#9C27B0","#FF5722","#009688","#795548"] }] },
-      options: { plugins: { legend: { labels: { color: "#eee" } }, title: { display: true, text: "Despesas por Categoria (Mês)", color: "#d4af37" } } }
-    });
-  }
+  // --- GRÁFICO 3: MÉTODOS DE PAGAMENTO ---
+  const metodosDisponiveis = ["PIX", "Débito", "Crédito", "VA/VR", "Dinheiro", "Boleto", "Débito Automático"];
+  const somaPorMetodo = Array(metodosDisponiveis.length).fill(0);
+  transacoesDoMes.filter(t => t.tipo === "despesa").forEach(t => {
+    const formaNormalizada = t.forma || "PIX";
+    const idx = metodosDisponiveis.indexOf(formaNormalizada);
+    if(idx !== -1) somaPorMetodo[idx] += t.valor;
+  });
 
-  // --- GRÁFICO 3 ---
   const ctxMetodos = document.getElementById("graficoMetodosPagamento").getContext("2d");
   if(graficoMetodosChart) graficoMetodosChart.destroy();
   graficoMetodosChart = new Chart(ctxMetodos, {
     type: "bar",
     data: {
       labels: metodosDisponiveis,
-      datasets: [{ label: "Total Gasto", data: somaPorMetodo, backgroundColor: "#03A9F4" }]
+      datasets: [{ label: "Total Gasto", data: somaPorMetodo, backgroundColor: "#03A9F4", borderRadius: 4 }]
     },
     options: {
       indexAxis: 'y',
@@ -1027,7 +1167,7 @@ function renderizarGraficos(){
     }
   });
 
-  // --- GRÁFICO 4 ---
+  // --- GRÁFICO 4: PATRIMÔNIO ACUMULADO ---
   const ctxPatrimonio = document.getElementById("graficoPatrimonioHistorico").getContext("2d");
   if(graficoPatrimonioChart) graficoPatrimonioChart.destroy();
   graficoPatrimonioChart = new Chart(ctxPatrimonio, {
@@ -1051,56 +1191,143 @@ function renderizarGraficos(){
   });
 }
 
-// ---------- RENDER: INSIGHTS ----------
-function renderizarInsights(){
-  const lista = document.getElementById("lista-insights");
-  lista.innerHTML = "";
-  const insights = [];
+// ---------- RENDER: MÓDULO L7-IA (ASSISTENTE INTELIGENTE) ----------
+function iniciarAbaIa() {
+  const container = document.getElementById("ia-historico-chat");
+  if(container.children.length === 0) {
+    const transacoesDoMes = filtrarTransacoesDoPeriodo();
+    const receitas = totalPorTipoNoPeriodo("receita", transacoesDoMes);
+    const despesas = totalPorTipoNoPeriodo("despesa", transacoesDoMes);
+    const saldo = receitas - despesas;
 
-  const transacoesFiltradas = filtrarTransacoesDoPeriodo();
-  const receitas = totalPorTipoNoPeriodo("receita", transacoesFiltradas);
-  const despesas = totalPorTipoNoPeriodo("despesa", transacoesFiltradas);
-  const saldo = receitas - despesas;
-
-  if(transacoesFiltradas.length === 0){
-    lista.innerHTML = `<div class="vazio">Sem movimentações registradas neste mês. Adicione lançamentos para gerar insights.</div>`;
-    return;
-  }
-
-  if(saldo < 0){
-    insights.push({ icone:"fa-triangle-exclamation", txt:`Suas despesas superaram as receitas em ${formatarMoeda(Math.abs(saldo))} neste mês.` });
-  } else {
-    insights.push({ icone:"fa-thumbs-up", txt:`Você está com saldo positivo de ${formatarMoeda(saldo)} neste mês.` });
-  }
-
-  const categoriesDespesa = Object.keys(dados.categorias).filter(n=>dados.categorias[n].tipo==="despesa");
-  let categoriaTopo = null, maiorGasto = 0;
-  const estourou = [];
-  categoriesDespesa.forEach(nome=>{
-    const gasto = gastoPorCategoriaNoPeriodo(nome, transacoesFiltradas);
-    if(gasto > maiorGasto){ maiorGasto = gasto; categoriaTopo = nome; }
+    let saudacao = `Olá! Sou o **L7-IA**, seu conselheiro financeiro pessoal. 👋<br><br>`;
+    saudacao += `Estou analisando seu mês atual (**${receitas > 0 ? 'Receitas: ' + formatarMoeda(receitas) : 'Sem receitas cadastradas'}** | **Despesas: ${formatarMoeda(despesas)}**).<br><br>`;
     
-    const orc = obterOrcamentoCategoria(nome, dataFiltro);
-    if(orc > 0 && gasto > orc) estourou.push(nome);
-  });
+    if(saldo <= 0 && despesas > 0) {
+      saudacao += `⚠️ **Atenção:** Você está operando no vermelho ou no limite! Tem certeza de que quer assumir novas contas agora ou prefere dar um enxugada nos gastos?`;
+    } else if(saldo > 0) {
+      saudacao += `Seu saldo livre estimado é de **${formatarMoeda(saldo)}**. Como posso te ajudar a tomar a melhor decisão hoje? Pode me perguntar sobre novas contas, planos para trocar de carro ou comprar um imóvel!`;
+    } else {
+      saudacao += `Cadastre suas movimentações no app para que eu faça análises cirúrgicas do seu perfil financeiro!`;
+    }
 
-  if(categoriaTopo && maiorGasto > 0){
-    insights.push({ icone:"fa-magnifying-glass-chart", txt:`Sua maior despesa este mês foi em "${categoriaTopo}", totalizando ${formatarMoeda(maiorGasto)}.` });
+    adicionarMensagemIa("ia", saudacao);
   }
-  if(estourou.length > 0){
-    insights.push({ icone:"fa-fire", txt:`Você estourou o orçamento planejado neste mês em: ${estourou.join(", ")}.` });
+}
+
+function adicionarMensagemIa(origem, texto) {
+  const container = document.getElementById("ia-historico-chat");
+  const div = document.createElement("div");
+  div.className = `ia-box-msg ${origem === "usuario" ? "usuario" : ""}`;
+  
+  const icone = origem === "usuario" ? "fa-user" : "fa-robot";
+  const nome = origem === "usuario" ? "Você" : "L7-IA Conselheiro";
+
+  div.innerHTML = `
+    <div class="ia-header"><i class="fa-solid ${icone}"></i> <span>${nome}</span></div>
+    <div class="ia-body">${texto.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</div>
+  `;
+
+  container.appendChild(div);
+  div.scrollIntoView({ behavior: 'smooth' });
+}
+
+function tratarKeyPressIa(event) {
+  if (event.key === "Enter") {
+    enviarPerguntaIa();
   }
-  if(despesas > 0 && receitas > 0){
-    const pctComprometido = (despesas/receitas)*100;
-    insights.push({ icone:"fa-percent", txt:`Você já comprometeu ${pctComprometido.toFixed(0)}% de suas receitas com as despesas deste mês.` });
+}
+
+function perguntarIaPredefinida(pergunta) {
+  document.getElementById("input-ia-pergunta").value = pergunta;
+  enviarPerguntaIa();
+}
+
+function enviarPerguntaIa() {
+  const input = document.getElementById("input-ia-pergunta");
+  const pergunta = input.value.trim();
+  if(!pergunta) return;
+
+  adicionarMensagemIa("usuario", pergunta);
+  input.value = "";
+
+  setTimeout(() => {
+    processarRespostaIa(pergunta);
+  }, 400);
+}
+
+function processarRespostaIa(pergunta) {
+  const transacoesDoMes = filtrarTransacoesDoPeriodo();
+  const receitas = totalPorTipoNoPeriodo("receita", transacoesDoMes);
+  const despesas = totalPorTipoNoPeriodo("despesa", transacoesDoMes);
+  const saldoLivre = receitas - despesas;
+
+  const valorEncontrado = pergunta.match(/\d+[\d\.,]*/);
+  let valorSimulacao = 0;
+  if (valorEncontrado) {
+    valorSimulacao = parseFloat(valorEncontrado[0].replace(".", "").replace(",", "."));
   }
 
-  insights.forEach(i=>{
-    const div = document.createElement("div");
-    div.className = "insight";
-    div.innerHTML = `<i class="fa-solid ${i.icone}"></i><div class="txt">${i.txt}</div>`;
-    lista.appendChild(div);
-  });
+  const perguntaLower = pergunta.toLowerCase();
+  let resposta = "";
+
+  // 1. Pergunta sobre assumir novo gasto mensal (Ex: 500 reais)
+  if (perguntaLower.includes("posso") || perguntaLower.includes("conta") || perguntaLower.includes("assumir") || perguntaLower.includes("gastar")) {
+    if (valorSimulacao > 0) {
+      if (saldoLivre >= valorSimulacao) {
+        const sobraAposGasto = saldoLivre - valorSimulacao;
+        resposta = `Analisei seu orçamento: Você tem **${formatarMoeda(saldoLivre)}** de saldo livre no mês. <br><br>`;
+        resposta += `Matematicamente **SIM**, você consegue pagar essa parcela de **${formatarMoeda(valorSimulacao)}**. Sobrarão **${formatarMoeda(sobraAposGasto)}**.<br><br>`;
+        resposta += `🔥 **Mas fica a provocação:** Você tem *certeza* de que deseja aumentar seu custo fixo mensal? Se você direcionar esses **${formatarMoeda(valorSimulacao)}** para seus aportes ou investimentos todos os meses, em 1 ano você terá mais de **${formatarMoeda(valorSimulacao * 12)}** acumulados!<br><br>`;
+        resposta += `💡 *Que tal enxugar despesas superficiais primeiro para não comprometer sua margem de segurança?*`;
+      } else {
+        const dfeicid = valorSimulacao - saldoLivre;
+        resposta = `🚨 **Cuidado! A conta não fecha.**<br><br>`;
+        resposta += `Seu saldo livre no mês é de **${formatarMoeda(saldoLivre)}**. Assumir uma despesa de **${formatarMoeda(valorSimulacao)}** vai deixar seu orçamento **${formatarMoeda(dfeicid)} no vermelho** todos os meses!<br><br>`;
+        resposta += `🎯 **Minha recomendação urgente:** Não assuma esta conta agora. Para fazer esse investimento caber no seu bolso, sugiro reduzir seus custos em categorias de consumo livre (como Lazer ou Compras). Você quer que eu te ajude a cortar gastos?`;
+      }
+    } else {
+      resposta = `Para te dar uma resposta precisa sobre essa nova despesa, me diga o valor exato! Exemplo: *"Posso fazer uma conta de R$ 400,00?"*`;
+    }
+  } 
+  // 2. Análise Geral de Saúde Financeira
+  else if (perguntaLower.includes("saúde") || perguntaLower.includes("como está") || perguntaLower.includes("análise")) {
+    const pctComprometido = receitas > 0 ? (despesas / receitas) * 100 : 0;
+    
+    resposta = `📊 **Diagnóstico Financeiro do Mês:**<br><br>`;
+    resposta += `• **Receita Total:** ${formatarMoeda(receitas)}<br>`;
+    resposta += `• **Despesas Totais:** ${formatarMoeda(despesas)}<br>`;
+    resposta += `• **Comprometimento da Renda:** ${pctComprometido.toFixed(1)}%<br><br>`;
+
+    if (pctComprometido > 90) {
+      resposta += `⚠️ **Sua saúde financeira atual exige atenção imediata!** Você está gastando quase tudo o que ganha. Recomendo congelar novos custos e criar uma Reserva de Emergência urgente.`;
+    } else if (pctComprometido > 70) {
+      resposta += `🟡 **Estado Moderado.** Seu orçamento está cobrindo as contas, mas sobra pouca margem para construir patrimônio rápido. Aumente seus aportes!`;
+    } else {
+      resposta += `🟢 **Excelente saúde financeira!** Você está retendo uma boa parte da sua renda. Que tal traçar metas maiores de longo prazo agora?`;
+    }
+  }
+  // 3. Planos de Vida (Carro, Casa, Imóvel)
+  else if (perguntaLower.includes("carro") || perguntaLower.includes("veículo")) {
+    resposta = `🚗 **Planejamento para Compra/Troca de Carro:**<br><br>`;
+    resposta += `Comprar ou trocar de carro envolve não só as parcelas, mas também combustível, IPVA, seguro e manutenção.<br><br>`;
+    resposta += `💡 **Provocação:** Em vez de comprometer sua renda com parcelas com juros altos, que tal juntarmos um aporte mensal fixo para comprar à vista ou dar uma entrada expressiva?<br><br>`;
+    resposta += `Você gostaria que eu te ajudasse a calcular quanto precisa guardar mensalmente para conquistar esse carro em 12 ou 24 meses?`;
+  }
+  else if (perguntaLower.includes("apartamento") || perguntaLower.includes("terreno") || perguntaLower.includes("imóvel") || perguntaLower.includes("casa")) {
+    resposta = `🏠 **Planejamento para Imóvel/Terreno:**<br><br>`;
+    resposta += `Um imóvel é um marco patrimonial sensacional! Mas exige disciplina nos aportes para a entrada e custos de documentação.<br><br>`;
+    resposta += `Com o seu perfil financeiro atual, você pode destinar uma porcentagem fixa do seu saldo mensal direto para a aba **Patrimônio** do L7 Control.<br><br>`;
+    resposta += `Deseja montar uma estratégia de investimentos focada na entrada do seu novo imóvel?`;
+  }
+  // 4. Resposta Genérica Inteligente
+  else {
+    resposta = `Entendi sua dúvida! Com base nos seus lançamentos atuais (Saldo Livre: **${formatarMoeda(saldoLivre)}**):<br><br>`;
+    resposta += `Minha missão no **L7-IA** é garantir que você não tome decisões por impulso. Lembre-se: antes de assumir novos custos, priorize guardar pelo menos **20% das suas receitas** para investimentos.<br><br>`;
+    resposta += `Como posso te ajudar a organizar seus próximos passos financeiros?`;
+  }
+
+  adicionarMensagemIa("ia", resposta);
 }
 
 // ---------- RENDER: CONFIG ----------
