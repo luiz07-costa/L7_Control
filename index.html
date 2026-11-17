@@ -10,187 +10,133 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
+:root {
+  --bg-color: #080808;
+  --panel-bg: #171717;
+  --primary: #d4af37;
+  --receita: #4CAF50;
+  --despesa: #F44336;
+  --investimento: #9C27B0;
+  --saldo: #03A9F4;
+}
+
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
-body{background:#080808;color:white;padding-bottom:100px;}
-header{background:linear-gradient(180deg,#111,#1a1a1a);padding:25px;text-align:center;border-bottom:2px solid #d4af37;}
+body{background:var(--bg-color);color:white;padding-bottom:100px;}
+header{background:linear-gradient(180deg,#111,#1a1a1a);padding:25px;text-align:center;border-bottom:2px solid var(--primary);}
 .logo-box{display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 15px;}
-.logo-fallback{width:75px;height:75px;border-radius:20px;background:#1c1c1c;border:2px solid #d4af37;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 0 20px rgba(212,175,55,.35);}
-.logo-fallback i{font-size:24px;color:#d4af37;margin-bottom:2px;}
-.logo-text{font-size:18px;font-weight:800;color:#d4af37;letter-spacing:1px;line-height:1;}
-h1{color:#d4af37;font-size:30px;}
-.sub{color:#bbb;margin-top:5px;font-size:14px;}
+.logo-fallback{width:65px;height:65px;border-radius:18px;background:#1c1c1c;border:2px solid var(--primary);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 0 15px rgba(212,175,55,.3);}
+.logo-fallback i{font-size:22px;color:var(--primary);margin-bottom:2px;}
+.logo-text{font-size:16px;font-weight:800;color:var(--primary);letter-spacing:1px;line-height:1;}
+h1{color:var(--primary);font-size:26px;}
+.sub{color:#bbb;margin-top:5px;font-size:13px;}
 .tela{display:none;}
 .tela.ativa{display:block;}
 
-/* Filtro de Período Global */
-.filtro-periodo {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 15px;
-  padding: 15px 20px 5px;
-  transition: all 0.3s ease;
-}
-.filtro-periodo.escondido {
-  opacity: 0;
-  pointer-events: none;
-  height: 0;
-  padding: 0;
-  margin: 0;
-  overflow: hidden;
-}
-.filtro-periodo button {
-  background: #171717;
-  border: 1px solid #d4af37;
-  color: #d4af37;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  transition: all 0.2s;
-}
-.filtro-periodo button:hover {
-  background: #d4af37;
-  color: #000;
-}
-.filtro-periodo span {
-  font-size: 18px;
-  font-weight: 600;
-  min-width: 140px;
-  text-align: center;
-  text-transform: capitalize;
-}
-
-.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;padding:15px 20px 20px;}
-.card{background:#171717;padding:18px;border-radius:20px;text-align:center;box-shadow:0 0 15px rgba(212,175,55,.08);}
-.card i{font-size:28px;margin-bottom:12px;color:#d4af37;}
-.card h3{font-size:14px;margin-bottom:10px;}
-.valor{font-size:18px;font-weight:bold;}
-.receita{color:#4CAF50;}
-.despesa{color:#F44336;}
-.saldo{color:#03A9F4;}
-.patrimonio-destaque{color:#E91E63;}
-.titulo{padding:0 20px;margin-top:10px;margin-bottom:15px;font-size:22px;color:#d4af37;display:flex;justify-content:space-between;align-items:center;}
-.lista{padding:0 20px;}
-.item{background:#171717;border-radius:20px;padding:18px;margin-bottom:15px;box-shadow:0 0 10px rgba(255,255,255,.03);}
-.item-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
-.item-left{display:flex;align-items:center;gap:12px;font-weight:600;}
-.item-left i{font-size:24px;width:35px;color:#d4af37;}
-.progress{height:10px;background:#333;border-radius:50px;overflow:hidden;}
-.progress div{height:100%;border-radius:50px;transition:width .3s;}
-.info{margin-top:8px;font-size:13px;color:#bdbdbd;}
-.verde{background:#4CAF50;}
-.amarelo{background:#FFC107;}
-.vermelho{background:#F44336;}
-.fab{position:fixed;right:20px;bottom:105px;width:70px;height:70px;border-radius:50%;background:#d4af37;border:none;font-size:30px;cursor:pointer;box-shadow:0 0 20px rgba(212,175,55,.4);z-index:50;}
-
-/* Menu Inferior */
-nav{position:fixed;bottom:0;left:0;right:0;height:85px;background:#111;display:flex;justify-content:space-around;align-items:center;border-top:1px solid #2d2d2d;z-index:60;padding-bottom:5px;}
-nav div{display:flex;flex-direction:column;align-items:center;cursor:pointer;font-size:9px;color:#888;transition:color .2s;flex:1;text-align:center;}
-nav div.ativo{color:#d4af37;}
-nav i{font-size:18px;margin-bottom:5px;}
-
-footer{text-align:center;padding:30px;font-size:13px;color:#999;}
-label{font-size:13px;color:#ccc;}
-input,select,textarea{width:100%;padding:15px;border-radius:12px;margin:8px 0 18px;border:none;background:#222;color:white;font-size:15px;}
-input:focus,select:focus,textarea:focus{outline:2px solid #d4af37;}
-.modal-bg{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#000000dd;z-index:999;overflow:auto;}
-.modal-box{background:#171717;margin:25px;padding:25px;border-radius:25px;box-shadow:0 0 25px rgba(212,175,55,.25);}
-.btn-primario{width:100%;padding:16px;background:#d4af37;color:#000;font-size:18px;font-weight:bold;border:none;border-radius:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;}
-.btn-secundario{width:100%;padding:16px;margin-top:12px;background:#333;color:white;border:none;border-radius:15px;cursor:pointer;}
-.btn-sucesso{width:100%;padding:16px;margin-top:12px;background:#4CAF50;color:white;font-size:16px;font-weight:bold;border:none;border-radius:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;}
-.btn-perigo{width:100%;padding:16px;margin-top:12px;background:#F44336;color:white;border:none;border-radius:15px;cursor:pointer;}
-.transacao{display:flex;justify-content:space-between;align-items:center;background:#171717;border-radius:16px;padding:14px 18px;margin-bottom:12px;}
-.transacao .desc{font-weight:600;font-size:14px;}
-.transacao .obs{font-size:12px;color:#d4af37;margin-top:2px;font-style:italic;}
-.transacao .data{font-size:12px;color:#999;margin-top:3px;}
-.vazio{text-align:center;color:#777;padding:40px 20px;font-size:14px;}
-.chart-box{background:#171717;border-radius:20px;padding:20px;margin:0 20px 20px;box-shadow:0 0 15px rgba(0,0,0,0.5);}
-.insight{background:#171717;border-radius:18px;padding:16px 18px;margin-bottom:14px;display:flex;gap:14px;align-items:flex-start;}
-.insight i{font-size:20px;color:#d4af37;margin-top:2px;}
-.insight .txt{font-size:14px;color:#ddd;line-height:1.4;}
-.config-item{background:#171717;border-radius:18px;padding:16px 18px;margin-bottom:14px;}
-.config-item .cab{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-weight:600;}
-.config-item input{margin:0;}
-.alerta-salvo{background:#4CAF50;color:white;padding:12px;border-radius:10px;text-align:center;margin-bottom:15px;font-weight:600;display:none;font-size:14px;}
-
-/* Estilos Específicos do L7-IA */
-.ia-chat-container {
-  padding: 0 20px;
+/* Filtro de Período Consolidado */
+.filtro-container {
+  background: var(--panel-bg);
+  margin: 15px 20px;
+  border-radius: 15px;
+  padding: 10px;
   display: flex;
   flex-direction: column;
-  gap: 15px;
-}
-.ia-box-msg {
-  background: #171717;
-  border-radius: 20px;
-  padding: 18px;
-  border-left: 4px solid #d4af37;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-}
-.ia-box-msg.usuario {
-  border-left: 4px solid #03A9F4;
-  background: #1f2833;
-}
-.ia-header {
-  display: flex;
-  align-items: center;
   gap: 10px;
-  margin-bottom: 10px;
-  font-weight: 700;
-  color: #d4af37;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
 }
-.ia-header i { font-size: 20px; }
-.ia-body {
-  font-size: 14px;
-  line-height: 1.6;
-  color: #eee;
-}
-.ia-sugestoes-rapidas {
-  display: flex;
-  gap: 10px;
-  overflow-x: auto;
-  padding: 10px 0;
-  margin-bottom: 15px;
-}
-.chip-sugestao {
+.filtro-tipo select {
   background: #222;
-  border: 1px solid #d4af37;
-  color: #d4af37;
-  padding: 10px 16px;
-  border-radius: 25px;
-  font-size: 12px;
-  white-space: nowrap;
-  cursor: pointer;
-  transition: all 0.2s;
+  color: var(--primary);
+  border: 1px solid var(--primary);
+  border-radius: 10px;
+  padding: 8px;
+  width: 100%;
+  font-weight: 600;
+  text-align: center;
+  font-size: 14px;
 }
-.chip-sugestao:hover {
-  background: #d4af37;
-  color: #000;
+.filtro-navegacao { display: flex; justify-content: space-between; align-items: center; }
+.filtro-navegacao button {
+  background: #222; border: none; color: var(--primary); border-radius: 8px;
+  width: 35px; height: 35px; cursor: pointer; font-size: 16px; transition: 0.2s;
 }
-.ia-input-group {
-  display: flex;
-  gap: 10px;
-  margin-top: 15px;
-}
-.ia-input-group input {
-  margin: 0;
-  flex: 1;
-}
-.btn-ia-enviar {
-  background: #d4af37;
-  color: #000;
-  border: none;
-  border-radius: 12px;
-  padding: 0 20px;
-  font-weight: bold;
-  cursor: pointer;
-  font-size: 16px;
-}
+.filtro-navegacao button:hover { background: var(--primary); color: #000; }
+.filtro-navegacao span { font-size: 16px; font-weight: 600; text-align: center; flex: 1; }
+
+/* Dashboard Clean 4 Cards - Alinhados em 2x2 */
+.cards-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;padding:5px 20px 20px;}
+.card{background:var(--panel-bg);padding:20px 10px;border-radius:20px;text-align:center;box-shadow:0 0 15px rgba(0,0,0,0.2); border-bottom: 3px solid #333;}
+.card.c-receita{border-bottom-color:var(--receita);}
+.card.c-despesa{border-bottom-color:var(--despesa);}
+.card.c-invest{border-bottom-color:var(--investimento);}
+.card.c-saldo{border-bottom-color:var(--saldo);} /* Removido o grid-column: span 2 */
+.card i{font-size:26px;margin-bottom:10px;}
+.c-receita i{color:var(--receita);}
+.c-despesa i{color:var(--despesa);}
+.c-invest i{color:var(--investimento);}
+.c-saldo i{color:var(--saldo);}
+.card h3{font-size:12px;margin-bottom:8px;color:#aaa; font-weight:500;}
+.valor{font-size:18px;font-weight:bold;color:#fff;}
+
+.titulo{padding:0 20px;margin-top:10px;margin-bottom:15px;font-size:20px;color:var(--primary);display:flex;justify-content:space-between;align-items:center;}
+.lista{padding:0 20px;}
+.item{background:var(--panel-bg);border-radius:15px;padding:15px;margin-bottom:12px;}
+
+/* Estilos de Barras de Progresso (Categorias) */
+.item-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.item-left{display:flex;align-items:center;gap:12px;font-weight:600;}
+.item-left i{font-size:20px;width:30px;color:var(--primary);text-align:center;}
+.progress{height:10px;background:#333;border-radius:50px;overflow:hidden;}
+.progress div{height:100%;border-radius:50px;transition:width .3s;}
+.info{margin-top:8px;font-size:12px;color:#bdbdbd;}
+.verde{background:var(--receita);}
+.amarelo{background:#FFC107;}
+.vermelho{background:var(--despesa);}
+
+/* Insights Avançados */
+.ia-container { padding: 0 20px; display: flex; flex-direction: column; gap: 15px; }
+.ia-card { background: var(--panel-bg); border-radius: 18px; padding: 20px; position: relative; overflow: hidden; }
+.ia-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 5px; }
+.ia-card.verde::before { background: var(--receita); }
+.ia-card.amarelo::before { background: #FFC107; }
+.ia-card.vermelho::before { background: var(--despesa); }
+.ia-card.roxo::before { background: var(--investimento); }
+.ia-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-weight: 700; color: var(--primary); font-size: 16px; }
+.ia-header i { font-size: 20px; }
+.ia-valor { font-size: 26px; font-weight: bold; margin-bottom: 5px; }
+.ia-texto { font-size: 13px; color: #ccc; line-height: 1.5; }
+
+/* Gráficos */
+.chart-box{background:var(--panel-bg);border-radius:20px;padding:15px;margin:0 20px 20px;box-shadow:0 0 15px rgba(0,0,0,0.3);}
+
+/* FAB - Botão de Adicionar */
+.fab{display:none; position:fixed;right:20px;bottom:105px;width:65px;height:65px;border-radius:50%;background:var(--primary);border:none;color:#000;font-size:28px;cursor:pointer;box-shadow:0 4px 15px rgba(212,175,55,.5);z-index:50;transition:0.3s;}
+.fab:active{transform:scale(0.9);}
+
+/* Bottom Nav */
+nav{position:fixed;bottom:0;left:0;right:0;height:80px;background:#111;display:flex;align-items:center;border-top:1px solid #2d2d2d;z-index:60;padding-bottom:5px; overflow-x: auto; justify-content: flex-start;}
+nav::-webkit-scrollbar { display: none; }
+nav div{display:flex;flex-direction:column;align-items:center;cursor:pointer;font-size:10px;color:#777;transition:color .2s;flex: 0 0 75px; text-align:center;}
+nav div.ativo{color:var(--primary);}
+nav i{font-size:20px;margin-bottom:5px;}
+
+/* Formulários & Config */
+label{font-size:13px;color:#ccc;}
+input,select,textarea{width:100%;padding:14px;border-radius:12px;margin:6px 0 16px;border:none;background:#222;color:white;font-size:15px;}
+input:focus,select:focus{outline:2px solid var(--primary);}
+.modal-bg{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#000000ed;z-index:999;overflow:auto;}
+.modal-box{background:var(--panel-bg);margin:20px;padding:25px;border-radius:20px;}
+.btn-primario{width:100%;padding:15px;background:var(--primary);color:#000;font-size:16px;font-weight:bold;border:none;border-radius:12px;cursor:pointer;}
+.btn-secundario{width:100%;padding:15px;margin-top:10px;background:#333;color:white;border:none;border-radius:12px;cursor:pointer;}
+
+.transacao{display:flex;justify-content:space-between;align-items:center;background:var(--panel-bg);border-radius:15px;padding:15px;margin-bottom:12px;}
+.transacao .desc{font-weight:600;font-size:14px;}
+.transacao .data{font-size:12px;color:#999;margin-top:3px;}
+.vazio{text-align:center;color:#777;padding:40px 20px;font-size:14px;}
+
+.config-item{background:var(--panel-bg);border-radius:15px;padding:15px;margin-bottom:12px;}
+.config-item .cab{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-weight:600;}
+.config-item input{margin:0;}
+.alerta-salvo{background:var(--receita);color:white;padding:12px;border-radius:10px;text-align:center;margin-bottom:15px;font-weight:600;display:none;font-size:14px;}
 </style>
 </head>
 <body>
@@ -203,118 +149,122 @@ input:focus,select:focus,textarea:focus{outline:2px solid #d4af37;}
   </div>
 </div>
 <h1>L7 CONTROL</h1>
-<div class="sub">Seu controle financeiro pessoal</div>
+<div class="sub">Gestão Financeira e Patrimônio</div>
 </header>
 
-<!-- Seletor Global de Período -->
-<div id="seletor-periodo-global" class="filtro-periodo">
-  <button onclick="alterarMes(-1)"><i class="fa-solid fa-chevron-left"></i></button>
-  <span id="label-periodo">Julho / 2026</span>
-  <button onclick="alterarMes(1)"><i class="fa-solid fa-chevron-right"></i></button>
+<!-- SELETOR GLOBAL CONSOLIDADO -->
+<div class="filtro-container" id="seletor-periodo-global">
+  <div class="filtro-tipo">
+    <select id="select-modo-filtro" onchange="mudarModoFiltro()">
+      <option value="mensal">Visão Mensal</option>
+      <option value="anual">Visão Anual</option>
+      <option value="geral">Visão Geral (Todo Histórico)</option>
+    </select>
+  </div>
+  <div class="filtro-navegacao" id="controles-navegacao">
+    <button onclick="alterarPeriodo(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+    <span id="label-periodo">Julho / 2026</span>
+    <button onclick="alterarPeriodo(1)"><i class="fa-solid fa-chevron-right"></i></button>
+  </div>
 </div>
 
-<!-- ===================== TELA DASHBOARD ===================== -->
+<!-- ===================== DASHBOARD CLEAN (4 Cards) ===================== -->
 <div id="tela-dashboard" class="tela ativa">
-  <div class="cards">
-    <div class="card">
+  <div class="cards-grid">
+    <div class="card c-receita">
       <i class="fa-solid fa-arrow-trend-up"></i>
       <h3>Receitas</h3>
-      <div class="valor receita" id="receitas">R$ 0,00</div>
+      <div class="valor" id="dash-receitas">R$ 0,00</div>
     </div>
-    <div class="card">
+    <div class="card c-despesa">
       <i class="fa-solid fa-arrow-trend-down"></i>
       <h3>Despesas</h3>
-      <div class="valor despesa" id="despesas">R$ 0,00</div>
+      <div class="valor" id="dash-despesas">R$ 0,00</div>
     </div>
-    <div class="card">
+    <div class="card c-invest">
+      <i class="fa-solid fa-piggy-bank"></i>
+      <h3>Aportes</h3>
+      <div class="valor" id="dash-investimentos">R$ 0,00</div>
+    </div>
+    <div class="card c-saldo">
       <i class="fa-solid fa-wallet"></i>
-      <h3>Saldo</h3>
-      <div class="valor saldo" id="saldo">R$ 0,00</div>
+      <h3>Saldo Período</h3>
+      <div class="valor" id="dash-saldo">R$ 0,00</div>
     </div>
   </div>
-
-  <h2 class="titulo">Categorias (Mês Atual)</h2>
-  <div class="lista" id="lista-categorias"></div>
 </div>
 
-<!-- ===================== TELA RECEITAS/DESPESAS ===================== -->
+<!-- ===================== LANÇAMENTOS ===================== -->
 <div id="tela-receitas" class="tela">
-  <h2 class="titulo">Lançamentos do Mês</h2>
+  <h2 class="titulo">Extrato Consolidado</h2>
   <div class="lista" id="lista-transacoes"></div>
 </div>
 
-<!-- ===================== TELA GRÁFICOS ===================== -->
-<div id="tela-graficos" class="tela">
-  <h2 class="titulo">Relatórios Financeiros</h2>
-  <div class="chart-box"><canvas id="graficoCategorias"></canvas></div>
-  <div class="chart-box"><canvas id="graficoAnualComparativo"></canvas></div>
-  <div class="chart-box"><canvas id="graficoMetodosPagamento"></canvas></div>
-  <div class="chart-box"><canvas id="graficoPatrimonioHistorico"></canvas></div>
+<!-- ===================== ORÇAMENTOS ===================== -->
+<div id="tela-orcamentos" class="tela">
+  <h2 class="titulo">Categorias (Orçamento)</h2>
+  <div class="lista" id="lista-categorias-progresso"></div>
 </div>
 
-<!-- ===================== TELA PATRIMÔNIO (INVESTIMENTOS) ===================== -->
+<!-- ===================== ANALYTICS ===================== -->
+<div id="tela-graficos" class="tela">
+  <h2 class="titulo">Analytics Avançado</h2>
+  <div class="chart-box">
+    <h3 style="font-size:14px; text-align:center; color:#ccc; margin-bottom:10px;">Resumo do Período</h3>
+    <canvas id="chartResumo"></canvas>
+  </div>
+  <div class="chart-box">
+    <h3 style="font-size:14px; text-align:center; color:#ccc; margin-bottom:10px;">Evolução de Caixa</h3>
+    <canvas id="chartEvolucao"></canvas>
+  </div>
+  <div class="chart-box">
+    <h3 style="font-size:14px; text-align:center; color:#ccc; margin-bottom:10px;">Despesas por Categoria</h3>
+    <canvas id="chartCategorias"></canvas>
+  </div>
+</div>
+
+<!-- ===================== PATRIMÔNIO ===================== -->
 <div id="tela-patrimonio" class="tela">
   <h2 class="titulo">Patrimônio & Poupança</h2>
-  
-  <div class="cards" style="grid-template-columns: 1fr;">
-    <div class="card" style="padding: 25px; border-left: 5px solid #E91E63;">
-      <i class="fa-solid fa-sack-dollar" style="color: #E91E63; font-size: 36px;"></i>
-      <h3 style="font-size: 16px;">Patrimônio Total Estimado</h3>
-      <div class="valor patrimonio-destaque" id="patrimonio-total" style="font-size: 32px; margin: 10px 0;">R$ 0,00</div>
-      <p style="font-size: 12px; color: #aaa;">Soma de lançamentos de investimentos + seu ajuste manual de rendimentos</p>
+  <div class="cards-grid" style="grid-template-columns: 1fr;">
+    <div class="card" style="border-bottom: 4px solid var(--investimento);">
+      <i class="fa-solid fa-vault" style="color:var(--investimento); font-size:30px;"></i>
+      <h3 style="margin-top:10px;">Patrimônio Total Acumulado</h3>
+      <div class="valor" id="patrimonio-total" style="font-size: 32px; color:var(--investimento);">R$ 0,00</div>
+      <p style="font-size:11px; color:#888; margin-top:5px;">Soma de todos os aportes + ajustes de rendimentos</p>
     </div>
   </div>
-
   <div class="lista">
-    <div class="item">
-      <div class="item-top" style="margin-bottom: 5px;">
-        <div class="item-left"><i class="fa-solid fa-sliders" style="color: #E91E63;"></i><span>Ajuste Manual de Rendimentos</span></div>
-      </div>
-      <p style="font-size: 12px; color: #aaa; margin-bottom: 12px;">Mude o saldo para somar rendimentos de fundos, juros ou correções.</p>
-      <div style="display:flex; gap: 10px; align-items: center;">
-        <input type="number" id="input-ajuste-patrimonio" step="0.01" style="margin: 0; flex: 1;" placeholder="Ex: 500.00 ou -20.00">
-        <button class="btn-primario" onclick="salvarAjustePatrimonial()" style="width: auto; padding: 15px 25px; background: #E91E63; color: white;">Aplicar</button>
-      </div>
+    <h3 style="color:#d4af37; font-size:14px; margin-bottom:10px;">Ajuste de Rendimentos (Juros/Correções)</h3>
+    <div style="display:flex; gap:10px;">
+      <input type="number" id="input-ajuste-patrimonio" step="0.01" style="margin:0;" placeholder="Valor R$">
+      <button class="btn-primario" onclick="salvarAjustePatrimonial()" style="width:auto; padding:0 25px;">Aplicar</button>
     </div>
   </div>
-
-  <h2 class="titulo">Histórico de Investimentos</h2>
+  <h2 class="titulo" style="margin-top:20px;">Histórico de Aportes</h2>
   <div class="lista" id="lista-investimentos-historico"></div>
 </div>
 
-<!-- ===================== TELA L7-IA (NOVA ABA INTERATIVA) ===================== -->
+<!-- ===================== L7-IA INSIGHTS ===================== -->
 <div id="tela-ia" class="tela">
-  <h2 class="titulo"><i class="fa-solid fa-robot" style="color:#d4af37;"></i> L7-IA · Assistente Inteligente</h2>
-  
-  <div class="ia-chat-container">
-    <div class="ia-sugestoes-rapidas">
-      <div class="chip-sugestao" onclick="perguntarIaPredefinida('Posso fazer uma conta mensal no valor de R$ 500,00?')">💰 Posso assumir +R$ 500/mês?</div>
-      <div class="chip-sugestao" onclick="perguntarIaPredefinida('Como está minha saúde financeira este mês?')">📊 Análise da minha saúde financeira</div>
-      <div class="chip-sugestao" onclick="perguntarIaPredefinida('Quero comprar um carro novo. Como me planejar?')">🚗 Quero planejar comprar um carro</div>
-      <div class="chip-sugestao" onclick="perguntarIaPredefinida('Quero comprar um apartamento ou terreno. O que sugerir?')">🏠 Planejar compra de imóvel</div>
-    </div>
-
-    <div id="ia-historico-chat"></div>
-
-    <div class="ia-input-group">
-      <input type="text" id="input-ia-pergunta" placeholder="Pergunte algo (ex: Posso gastar R$ 300 com um curso?)..." onkeypress="tratarKeyPressIa(event)">
-      <button class="btn-ia-enviar" onclick="enviarPerguntaIa()"><i class="fa-solid fa-paper-plane"></i></button>
-    </div>
-  </div>
+  <h2 class="titulo"><i class="fa-solid fa-lightbulb"></i> Insights Financeiros</h2>
+  <div class="ia-container" id="ia-insights-container"></div>
 </div>
 
-<!-- ===================== TELA CONFIG ===================== -->
+<!-- ===================== CONFIG ===================== -->
 <div id="tela-config" class="tela">
-  <h2 class="titulo">Configurações & Orçamentos</h2>
+  <h2 class="titulo">Configurações & Limites</h2>
   <div id="status-salvamento" class="alerta-salvo">Alterações salvas com sucesso!</div>
-  <div class="lista" id="lista-orcamentos"></div>
+  
   <div class="lista">
-    <button class="btn-sucesso" onclick="exportarParaCSV()">
-      <i class="fa-solid fa-file-excel"></i> Exportar para Excel/Google Sheets
-    </button>
-    <button class="btn-perigo" onclick="confirmarReset()">
-      <i class="fa-solid fa-trash"></i> Apagar todos os dados
-    </button>
+    <button class="btn-primario" onclick="abrirModalCategoria()" style="margin-bottom:20px;"><i class="fa-solid fa-plus"></i> Nova Categoria</button>
+  </div>
+  
+  <div class="lista" id="lista-orcamentos-config"></div>
+
+  <div class="lista">
+    <button class="btn-secundario" onclick="exportarParaCSV()" style="background:#4CAF50; margin-top:20px;"><i class="fa-solid fa-file-excel"></i> Exportar Dados</button>
+    <button class="btn-secundario" onclick="resetarDados()" style="background:#F44336; margin-top:15px;"><i class="fa-solid fa-trash"></i> Apagar Tudo</button>
   </div>
 </div>
 
@@ -323,8 +273,8 @@ input:focus,select:focus,textarea:focus{outline:2px solid #d4af37;}
   <h2 class="titulo">Desenvolvedor</h2>
   <div class="lista">
     <div class="card" style="width: 100%; margin-bottom: 20px; padding: 25px;">
-      <i class="fa-solid fa-user-tie" style="font-size: 40px; color: #d4af37; margin-bottom: 15px;"></i>
-      <h3 style="font-size: 20px; color: #d4af37;">Luiz Fernando</h3>
+      <i class="fa-solid fa-user-tie" style="font-size: 40px; color: var(--primary); margin-bottom: 15px;"></i>
+      <h3 style="font-size: 20px; color: var(--primary);">Luiz Fernando</h3>
       <p style="color: #ccc; margin-top: 10px; font-size: 14px;">Idealizador & Desenvolvedor</p>
     </div>
 
@@ -334,21 +284,21 @@ input:focus,select:focus,textarea:focus{outline:2px solid #d4af37;}
         <span>WhatsApp</span>
       </div>
       <a href="https://wa.me/5519997635790" target="_blank" style="color: #25D366; text-decoration: none; font-weight: bold; background: rgba(37, 211, 102, 0.12); padding: 10px 18px; border-radius: 12px; font-size: 14px; transition: 0.2s;">
-        <i class="fa-solid fa-arrow-up-right-from-square"></i> Abrir Conversa
+        <i class="fa-solid fa-arrow-up-right-from-square"></i> Abrir
       </a>
     </div>
 
     <div class="item" style="display: flex; align-items: center; justify-content: space-between; padding: 20px;">
       <div class="item-left">
-        <i class="fa-solid fa-envelope" style="color: #d4af37; font-size: 24px;"></i>
+        <i class="fa-solid fa-envelope" style="color: var(--primary); font-size: 24px;"></i>
         <span>E-mail</span>
       </div>
-      <a href="mailto:COSTALUIZ07@GMAIL.COM" style="color: #d4af37; text-decoration: none; font-weight: bold; font-size: 14px;">
+      <a href="mailto:COSTALUIZ07@GMAIL.COM" style="color: var(--primary); text-decoration: none; font-weight: bold; font-size: 14px;">
         COSTALUIZ07@GMAIL.COM
       </a>
     </div>
 
-    <div class="card" style="width: 100%; margin-top: 25px; border-left: 4px solid #d4af37; text-align: left; background: #171717; padding: 22px; border-radius: 18px;">
+    <div class="card" style="width: 100%; margin-top: 25px; border-left: 4px solid var(--primary); text-align: left; background: var(--panel-bg); padding: 22px; border-radius: 18px;">
       <p style="font-style: italic; font-size: 15px; line-height: 1.6; color: #eee; font-weight: 300;">
         "O controle financeiro não serve para limitar a sua liberdade, mas sim para criar as condições necessárias para que você seja verdadeiramente livre."
       </p>
@@ -356,266 +306,156 @@ input:focus,select:focus,textarea:focus{outline:2px solid #d4af37;}
   </div>
 </div>
 
-<!-- Botão Flutuante -->
-<button class="fab" onclick="abrirFormulario()"><i class="fa-solid fa-plus"></i></button>
+<!-- ===================== COMPONENTES FLUTUANTES ===================== -->
+<button class="fab" id="fab-adicionar" onclick="abrirFormulario()"><i class="fa-solid fa-plus"></i></button>
 
-<!-- Formulário Novo Lançamento -->
 <div id="formulario" class="modal-bg">
   <div class="modal-box">
-    <h2 style="text-align:center;color:#d4af37;margin-bottom:25px;" id="titulo-form">Novo Lançamento</h2>
+    <h2 style="text-align:center;color:var(--primary);margin-bottom:20px;" id="titulo-form">Novo Lançamento</h2>
     <input type="hidden" id="input-id">
 
-    <label>Tipo</label>
+    <label>Tipo de Lançamento</label>
     <select id="input-tipo" onchange="atualizarCategoriasForm()">
-      <option value="despesa">Despesa</option>
-      <option value="receita">Receita</option>
+      <option value="despesa">Despesa (Saída)</option>
+      <option value="receita">Receita (Entrada)</option>
+      <option value="investimento">Investimento / Aporte</option>
     </select>
 
     <label>Categoria</label>
     <select id="input-categoria"></select>
 
-    <label>Descrição / Observação (Opcional)</label>
-    <input type="text" id="input-descricao" placeholder="Ex: Mercado do mês, Troca de óleo, Almoço domingo...">
+    <label>Descrição</label>
+    <input type="text" id="input-descricao" placeholder="Opcional">
 
     <label>Valor</label>
-    <input type="number" id="input-valor" placeholder="Digite o valor" min="0" step="0.01">
-
-    <label>Forma de Pagamento</label>
-    <select id="input-forma">
-      <option>PIX</option>
-      <option>Débito</option>
-      <option>Crédito</option>
-      <option>VA/VR</option>
-      <option>Dinheiro</option>
-      <option>Boleto</option>
-      <option>Débito Automático</option>
-    </select>
+    <input type="number" id="input-valor" placeholder="R$" step="0.01">
 
     <label>Data</label>
     <input type="date" id="input-data">
 
-    <div id="erro-form" style="color:#F44336;font-size:13px;margin-bottom:10px;display:none;"></div>
-
+    <div id="erro-form" style="color:var(--despesa);font-size:13px;display:none;margin-bottom:10px;"></div>
     <button class="btn-primario" onclick="salvarLancamento()">Salvar</button>
     <button class="btn-secundario" onclick="fecharFormulario()">Cancelar</button>
   </div>
 </div>
 
-<!-- Formulário Nova Categoria -->
 <div id="modal-categoria" class="modal-bg">
   <div class="modal-box">
-    <h2 style="text-align:center;color:#d4af37;margin-bottom:25px;">Nova Categoria</h2>
-
-    <label>Nome da Categoria</label>
-    <input type="text" id="cat-nome" placeholder="Ex: Viagens, Assinaturas, Freelas...">
-
+    <h2 style="text-align:center;color:var(--primary);margin-bottom:20px;">Nova Categoria</h2>
+    <label>Nome</label>
+    <input type="text" id="cat-nome">
     <label>Tipo</label>
-    <select id="cat-tipo" onchange="toggleOrcamentoCat()">
+    <select id="cat-tipo">
       <option value="despesa">Despesa</option>
       <option value="receita">Receita</option>
+      <option value="investimento">Investimento</option>
     </select>
-
-    <div id="div-cat-orcamento">
-      <label>Orçamento Limite Padrão (R$)</label>
-      <input type="number" id="cat-orcamento" placeholder="Ex: 500" min="0" step="0.01">
-    </div>
-
-    <label>Ícone</label>
-    <select id="cat-icone">
-      <option value="fa-cart-shopping">🛒 Compras / Loja</option>
-      <option value="fa-utensils">🍔 Alimentação / Restaurante</option>
-      <option value="fa-car">🚗 Carro / Transporte</option>
-      <option value="fa-house">🏠 Casa / Aluguel</option>
-      <option value="fa-file-invoice">📄 Contas / Boletos</option>
-      <option value="fa-heart-pulse">🏥 Saúde / Farmácia</option>
-      <option value="fa-graduation-cap">🎓 Educação / Cursos</option>
-      <option value="fa-plane">✈️ Viagem / Férias</option>
-      <option value="fa-gamepad">🎮 Lazer / Games</option>
-      <option value="fa-paw">🐾 Pets</option>
-      <option value="fa-shirt">👕 Roupas / Beleza</option>
-      <option value="fa-mobile-screen">📱 Telefone / Internet</option>
-      <option value="fa-sack-dollar">💰 Dinheiro / Salário</option>
-      <option value="fa-chart-line">📈 Investimentos</option>
-      <option value="fa-gift">🎁 Presentes / Extras</option>
-      <option value="fa-tag">🏷️ Outros / Geral</option>
-    </select>
-
-    <div id="erro-cat" style="color:#F44336;font-size:13px;margin-bottom:10px;display:none;"></div>
-
-    <button class="btn-primario" onclick="salvarNovaCategoria()"><i class="fa-solid fa-plus"></i> Salvar Categoria</button>
+    <label>Ícone (Nome FontAwesome)</label>
+    <input type="text" id="cat-icone" value="fa-tag" placeholder="Ex: fa-car">
+    <button class="btn-primario" onclick="salvarNovaCategoria()">Salvar Categoria</button>
     <button class="btn-secundario" onclick="fecharModalCategoria()">Cancelar</button>
   </div>
 </div>
 
-<!-- Modal de confirmação de reset -->
-<div id="modal-reset" class="modal-bg">
-  <div class="modal-box">
-    <h2 style="text-align:center;color:#F44336;margin-bottom:15px;">Apagar tudo?</h2>
-    <p style="text-align:center;color:#ccc;margin-bottom:25px;">Essa ação vai remover todos os lançamentos e orçamentos salvos neste dispositivo. Não é possível desfazer.</p>
-    <button class="btn-perigo" onclick="resetarDados()">Sim, apagar tudo</button>
-    <button class="btn-secundario" onclick="document.getElementById('modal-reset').style.display='none'">Cancelar</button>
-  </div>
-</div>
-
-<!-- Menu Inferior -->
+<!-- ===================== MENU BOTTOM ===================== -->
 <nav>
-  <div id="nav-dashboard" class="ativo" onclick="mostrarTela('dashboard')"><i class="fa-solid fa-house"></i><span>Início</span></div>
-  <div id="nav-receitas" onclick="mostrarTela('receitas')"><i class="fa-solid fa-money-bill-wave"></i><span>Lançamentos</span></div>
+  <div id="nav-dashboard" class="ativo" onclick="mostrarTela('dashboard')"><i class="fa-solid fa-chart-simple"></i><span>Resumo</span></div>
+  <div id="nav-receitas" onclick="mostrarTela('receitas')"><i class="fa-solid fa-list"></i><span>Extrato</span></div>
+  <div id="nav-orcamentos" onclick="mostrarTela('orcamentos')"><i class="fa-solid fa-bullseye"></i><span>Orçamentos</span></div>
   <div id="nav-graficos" onclick="mostrarTela('graficos')"><i class="fa-solid fa-chart-pie"></i><span>Gráficos</span></div>
   <div id="nav-patrimonio" onclick="mostrarTela('patrimonio')"><i class="fa-solid fa-vault"></i><span>Patrimônio</span></div>
-  <div id="nav-ia" onclick="mostrarTela('ia')"><i class="fa-solid fa-robot"></i><span>L7-IA</span></div>
+  <div id="nav-ia" onclick="mostrarTela('ia')"><i class="fa-solid fa-lightbulb"></i><span>Insights</span></div>
   <div id="nav-config" onclick="mostrarTela('config')"><i class="fa-solid fa-gear"></i><span>Config.</span></div>
   <div id="nav-dev" onclick="mostrarTela('dev')"><i class="fa-solid fa-code"></i><span>Dev</span></div>
 </nav>
 
-<footer>
-  Controle Luiz<br>
-  Versão 4.0 (Com L7-IA)<br><br>
-  Desenvolvido por <b>Luiz Costa</b>
-</footer>
-
 <script>
-/* =========================================================
-   CONTROLE LUIZ — L7 Control v4.0 (com L7-IA e Gráficos Limpos)
-   ========================================================= */
-
-const CHAVE_DADOS = "controleLuiz_dados_v3";
+const CHAVE_DADOS = "controleLuiz_dados_v5";
 
 const CATEGORIAS_PADRAO = {
-  // Moradia & Contas
-  "Condomínio":                       { icone: "fa-building",        tipo: "despesa", orcamento: 375 },
-  "Energia":                          { icone: "fa-bolt",            tipo: "despesa", orcamento: 200 },
-  "Água":                             { icone: "fa-droplet",         tipo: "despesa", orcamento: 90 },
-  "Internet":                         { icone: "fa-wifi",            tipo: "despesa", orcamento: 80 },
-  "Plano celular":                    { icone: "fa-mobile-screen",   tipo: "despesa", orcamento: 38 },
-  "Seguro residencial":               { icone: "fa-house-shield",    tipo: "despesa", orcamento: 0 },
-  "Cursos":                           { icone: "fa-graduation-cap",  tipo: "despesa", orcamento: 0 },
-
-  // Transporte
-  "Combustível":                      { icone: "fa-gas-pump",        tipo: "despesa", orcamento: 400 },
-  "Gastos carro":                     { icone: "fa-car-wrench",      tipo: "despesa", orcamento: 0 },
-  "Seguro carro":                     { icone: "fa-shield-halved",   tipo: "despesa", orcamento: 0 },
-  "Uber/Passagem":                    { icone: "fa-taxi",            tipo: "despesa", orcamento: 0 },
-
-  // Consumo & Estilo de Vida
-  "Coisas apê":                       { icone: "fa-couch",           tipo: "despesa", orcamento: 50 },
-  "Compras mês":                      { icone: "fa-cart-shopping",   tipo: "despesa", orcamento: 700 },
-  "Alimentação (dia-a-dia)":          { icone: "fa-utensils",        tipo: "despesa", orcamento: 100 },
-  "Pessoal (acessórios)":             { icone: "fa-glasses",         tipo: "despesa", orcamento: 50 },
-  "Corte cabelo":                     { icone: "fa-scissors",        tipo: "despesa", orcamento: 80 },
-  "Outros":                           { icone: "fa-tag",             tipo: "despesa", orcamento: 0 },
-  "Presentes":                        { icone: "fa-gift",            tipo: "despesa", orcamento: 0 },
-
-  // Saúde, Dieta & Treino
-  "Dieta semanal":                    { icone: "fa-basket-shopping", tipo: "despesa", orcamento: 350 },
-  "Suplementos":                      { icone: "fa-prescription-bottle", tipo: "despesa", orcamento: 250 },
-  "Academia":                         { icone: "fa-dumbbell",        tipo: "despesa", orcamento: 90 },
-  "Remédios":                         { icone: "fa-pills",           tipo: "despesa", orcamento: 0 },
-  "Consultas e exames médicos":       { icone: "fa-user-doctor",     tipo: "despesa", orcamento: 0 },
-
-  // Lazer & Assinaturas
-  "Lazer":                            { icone: "fa-film",            tipo: "despesa", orcamento: 500 },
-  "YouTube":                          { icone: "fa-play",            tipo: "despesa", orcamento: 54 },
-
-  // Investimentos & Futuro
-  "Aplicação":                        { icone: "fa-piggy-bank",      tipo: "despesa", orcamento: 2400 },
-  "Previdência privada":              { icone: "fa-vault",           tipo: "despesa", orcamento: 0 },
-
-  // Receitas
-  "Salário":                          { icone: "fa-sack-dollar",     tipo: "receita" },
-  "Vale":                             { icone: "fa-ticket",          tipo: "receita" },
-  "13º Salário":                      { icone: "fa-gift",            tipo: "receita" },
-  "Venda":                            { icone: "fa-tag",             tipo: "receita" },
-  "Investimentos":                    { icone: "fa-chart-line",      tipo: "receita" },
-  "Proventos de Ações":               { icone: "fa-coins",           tipo: "receita" },
-  "Proventos FIIs":                   { icone: "fa-building",        tipo: "receita" },
-  "Nota Fiscal Paulista":             { icone: "fa-receipt",         tipo: "receita" },
-  "Restituição IR":                   { icone: "fa-file-invoice",    tipo: "receita" },
-  "Outras Receitas":                  { icone: "fa-coins",           tipo: "receita" }
+  "Moradia": { icone: "fa-house", tipo: "despesa", orcamento: 500 },
+  "Alimentação": { icone: "fa-utensils", tipo: "despesa", orcamento: 400 },
+  "Transporte": { icone: "fa-car", tipo: "despesa", orcamento: 300 },
+  "Lazer": { icone: "fa-film", tipo: "despesa", orcamento: 200 },
+  "Saúde": { icone: "fa-heart-pulse", tipo: "despesa", orcamento: 150 },
+  "Salário": { icone: "fa-sack-dollar", tipo: "receita" },
+  "Vale": { icone: "fa-ticket", tipo: "receita" },
+  "Aplicação": { icone: "fa-piggy-bank", tipo: "investimento" },
+  "Previdência privada": { icone: "fa-vault", tipo: "investimento" },
+  "Investimentos": { icone: "fa-chart-line", tipo: "investimento" }
 };
 
-let dataFiltro = new Date();
 let dados = carregarDados();
+let dataFiltro = new Date();
+let modoFiltro = 'mensal'; 
 
-// Referências globais dos gráficos
-let graficoAnualChart = null;
-let graficoCategoriasChart = null;
-let graficoMetodosChart = null;
-let graficoPatrimonioChart = null;
+let chartResumo = null;
+let chartEvolucao = null;
+let chartCategorias = null;
 
-// ---------- PERSISTÊNCIA ----------
-function carregarDados(){
-  try{
-    const salvo = localStorage.getItem(CHAVE_DADOS);
-    if(salvo){
+// ---------- INICIALIZAÇÃO & DADOS ----------
+function carregarDados() {
+  let db = { categorias: {...CATEGORIAS_PADRAO}, transacoes: [], orcamentosMensais: {}, ajustePatrimonialManual: 0 };
+  try {
+    const salvo = localStorage.getItem(CHAVE_DADOS) || localStorage.getItem("controleLuiz_dados_v3");
+    if(salvo) {
       const parsed = JSON.parse(salvo);
-      if(parsed && parsed.categorias && parsed.transacoes) {
-        if(!parsed.orcamentosMensais) parsed.orcamentosMensais = {};
-        if(parsed.ajustePatrimonialManual === undefined) parsed.ajustePatrimonialManual = 0;
-        return parsed;
+      if(parsed.categorias) {
+        db.categorias = {...db.categorias, ...parsed.categorias};
+        
+        // CORREÇÃO CRÍTICA DO BUG DE INVESTIMENTOS (Retrocompatibilidade)
+        const investCats = ["Aplicação", "Previdência privada", "Investimentos"];
+        investCats.forEach(c => {
+          if (db.categorias[c]) db.categorias[c].tipo = "investimento";
+        });
       }
+      if(parsed.transacoes) db.transacoes = parsed.transacoes;
+      if(parsed.orcamentosMensais) db.orcamentosMensais = parsed.orcamentosMensais;
+      if(parsed.ajustePatrimonialManual) db.ajustePatrimonialManual = parsed.ajustePatrimonialManual;
     }
-  }catch(e){
-    console.warn("Iniciando sem cache.", e);
-  }
-  
-  const categoriasIniciais = {};
-  Object.keys(CATEGORIAS_PADRAO).forEach(nome=>{
-    categoriasIniciais[nome] = { ...CATEGORIAS_PADRAO[nome] };
-  });
-
-  return {
-    categorias: categoriasIniciais,
-    transacoes: [],
-    orcamentosMensais: {},
-    ajustePatrimonialManual: 0
-  };
+  } catch(e) {}
+  return db;
 }
+function salvarDados() { localStorage.setItem(CHAVE_DADOS, JSON.stringify(dados)); }
 
-function salvarDados(){
-  try{
-    localStorage.setItem(CHAVE_DADOS, JSON.stringify(dados));
-  }catch(e){
-    console.warn("Erro ao gravar dados.", e);
-  }
+function isInvestimentoLegacy(t) {
+  return (t.tipo === 'despesa' || t.tipo === 'receita') && 
+         (t.categoria === "Aplicação" || t.categoria === "Previdência privada" || t.categoria === "Investimentos");
 }
-
-// ---------- AUXILIAR DE PERÍODO ----------
-function obterChavePeriodo(data) {
-  const ano = data.getFullYear();
-  const mes = String(data.getMonth() + 1).padStart(2, '0');
-  return `${ano}-${mes}`;
-}
-
-function obterOrcamentoCategoria(nome, dataRef) {
-  const chavePeriodo = obterChavePeriodo(dataRef);
-  if (dados.orcamentosMensais[chavePeriodo] && dados.orcamentosMensais[chavePeriodo][nome] !== undefined) {
-    return dados.orcamentosMensais[chavePeriodo][nome];
-  }
-  return dados.categorias[nome]?.orcamento || 0;
+function getTipoReal(t) {
+  if (t.tipo === 'investimento' || isInvestimentoLegacy(t)) return 'investimento';
+  return t.tipo;
 }
 
 // ---------- CONTROLE DE PERÍODO ----------
-function atualizarLabelPeriodo() {
-  const meses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
-  const mesExtenso = meses[dataFiltro.getMonth()];
-  const ano = dataFiltro.getFullYear();
-  document.getElementById("label-periodo").textContent = `${mesExtenso} / ${ano}`;
-}
-
-function alterarMes(direcao) {
-  dataFiltro.setMonth(dataFiltro.getMonth() + direcao);
+function mudarModoFiltro() {
+  modoFiltro = document.getElementById("select-modo-filtro").value;
+  document.getElementById("controles-navegacao").style.display = modoFiltro === 'geral' ? 'none' : 'flex';
   atualizarLabelPeriodo();
   atualizarTudo();
 }
-
+function alterarPeriodo(dir) {
+  if(modoFiltro === 'mensal') dataFiltro.setMonth(dataFiltro.getMonth() + dir);
+  else if(modoFiltro === 'anual') dataFiltro.setFullYear(dataFiltro.getFullYear() + dir);
+  atualizarLabelPeriodo();
+  atualizarTudo();
+}
+function atualizarLabelPeriodo() {
+  const meses = ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
+  const label = document.getElementById("label-periodo");
+  const ano = dataFiltro.getFullYear();
+  if(modoFiltro === 'mensal') label.textContent = `${meses[dataFiltro.getMonth()]} / ${ano}`;
+  else if(modoFiltro === 'anual') label.textContent = `Ano ${ano}`;
+}
+function obterChavePeriodo() {
+  return `${dataFiltro.getFullYear()}-${String(dataFiltro.getMonth() + 1).padStart(2, '0')}`;
+}
 function filtrarTransacoesDoPeriodo() {
-  const anoFiltro = dataFiltro.getFullYear();
-  const mesFiltro = dataFiltro.getMonth();
-  
   return dados.transacoes.filter(t => {
-    const [ano, mes, dia] = t.data.split('-').map(Number);
-    return ano === anoFiltro && (mes - 1) === mesFiltro;
+    if(modoFiltro === 'geral') return true;
+    const [ano, mes] = t.data.split('-').map(Number);
+    if(modoFiltro === 'anual') return ano === dataFiltro.getFullYear();
+    return ano === dataFiltro.getFullYear() && (mes - 1) === dataFiltro.getMonth();
   });
 }
 
@@ -625,265 +465,84 @@ function mostrarTela(nome){
   document.querySelectorAll("nav div").forEach(n=>n.classList.remove("ativo"));
   document.getElementById("tela-"+nome).classList.add("ativa");
   document.getElementById("nav-"+nome).classList.add("ativo");
-
-  const seletor = document.getElementById("seletor-periodo-global");
   
-  if (nome === "dev" || nome === "patrimonio") {
-    seletor.classList.add("escondido");
+  // Controle do Botão Flutuante (FAB)
+  const fab = document.getElementById('fab-adicionar');
+  if (nome === 'receitas') {
+    fab.style.display = 'block';
   } else {
-    seletor.classList.remove("escondido");
+    fab.style.display = 'none';
   }
-
-  if(nome==="dashboard") atualizarTudo();
-  if(nome==="receitas") renderizarTransacoes();
-  if(nome==="graficos") renderizarGraficos();
-  if(nome==="patrimonio") renderizarPatrimonio();
-  if(nome==="ia") iniciarAbaIa();
-  if(nome==="config") renderizarConfig();
-}
-
-// ---------- FORMULÁRIO LANÇAMENTO ----------
-function abrirFormulario(id = null){
-  document.getElementById("erro-form").style.display = "none";
-
-  if (id) {
-    const t = dados.transacoes.find(item => item.id === id);
-    if (!t) return;
-    document.getElementById("titulo-form").textContent = "Editar Lançamento";
-    document.getElementById("input-id").value = t.id;
-    document.getElementById("input-tipo").value = t.tipo;
-    atualizarCategoriasForm();
-    document.getElementById("input-categoria").value = t.categoria;
-    document.getElementById("input-descricao").value = t.descricao || "";
-    document.getElementById("input-valor").value = t.valor;
-    document.getElementById("input-forma").value = t.forma || "PIX";
-    document.getElementById("input-data").value = t.data;
-  } else {
-    document.getElementById("titulo-form").textContent = "Novo Lançamento";
-    document.getElementById("input-id").value = "";
-    document.getElementById("input-data").value = hojeISO();
-    document.getElementById("input-tipo").value = "despesa";
-    atualizarCategoriasForm();
-    document.getElementById("input-descricao").value = "";
-    document.getElementById("input-valor").value = "";
-  }
-  
-  document.getElementById("formulario").style.display = "block";
-}
-
-function fecharFormulario(){
-  document.getElementById("formulario").style.display = "none";
-}
-
-function atualizarCategoriasForm(){
-  const tipo = document.getElementById("input-tipo").value;
-  const select = document.getElementById("input-categoria");
-  select.innerHTML = "";
-  Object.keys(dados.categorias)
-    .filter(nome => dados.categorias[nome].tipo === tipo)
-    .forEach(nome=>{
-      const opt = document.createElement("option");
-      opt.value = nome;
-      opt.textContent = nome;
-      select.appendChild(opt);
-    });
-}
-
-function hojeISO() {
-  const d = new Date();
-  const mes = String(d.getMonth() + 1).padStart(2, '0');
-  const dia = String(d.getDate()).padStart(2, '0');
-  return `${d.getFullYear()}-${mes}-${dia}`;
-}
-
-function salvarLancamento(){
-  const id = document.getElementById("input-id").value;
-  const tipo = document.getElementById("input-tipo").value;
-  const categoria = document.getElementById("input-categoria").value;
-  const descricao = document.getElementById("input-descricao").value.trim();
-  const valor = parseFloat(document.getElementById("input-valor").value);
-  const forma = document.getElementById("input-forma").value;
-  const data = document.getElementById("input-data").value;
-  const erroEl = document.getElementById("erro-form");
-
-  if(!categoria || isNaN(valor) || valor <= 0 || !data){
-    erroEl.textContent = "Preencha um valor válido e a data antes de salvar.";
-    erroEl.style.display = "block";
-    return;
-  }
-
-  if (id) {
-    const idx = dados.transacoes.findIndex(t => t.id === parseInt(id));
-    if (idx !== -1) {
-      dados.transacoes[idx] = { id: parseInt(id), tipo, categoria, descricao, valor, forma, data };
-    }
-  } else {
-    dados.transacoes.push({ id: Date.now(), tipo, categoria, descricao, valor, forma, data });
-  }
-
-  salvarDados();
-  fecharFormulario();
-  
-  const [ano, mes, dia] = data.split('-').map(Number);
-  dataFiltro = new Date(ano, mes - 1, dia);
-  atualizarLabelPeriodo();
 
   atualizarTudo();
 }
 
-// ---------- FORMULÁRIO NOVA CATEGORIA ----------
-function abrirModalCategoria(){
-  document.getElementById("cat-nome").value = "";
-  document.getElementById("cat-tipo").value = "despesa";
-  document.getElementById("cat-orcamento").value = "";
-  document.getElementById("erro-cat").style.display = "none";
-  toggleOrcamentoCat();
-  document.getElementById("modal-categoria").style.display = "block";
-}
-
-function fecharModalCategoria(){
-  document.getElementById("modal-categoria").style.display = "none";
-}
-
-function toggleOrcamentoCat(){
-  const tipo = document.getElementById("cat-tipo").value;
-  document.getElementById("div-cat-orcamento").style.display = tipo === "despesa" ? "block" : "none";
-}
-
-function salvarNovaCategoria(){
-  const nome = document.getElementById("cat-nome").value.trim();
-  const tipo = document.getElementById("cat-tipo").value;
-  const orcamento = parseFloat(document.getElementById("cat-orcamento").value) || 0;
-  const icone = document.getElementById("cat-icone").value;
-  const erroEl = document.getElementById("erro-cat");
-
-  if(!nome){
-    erroEl.textContent = "Digite um nome para a categoria.";
-    erroEl.style.display = "block";
-    return;
-  }
-  if(dados.categorias[nome]){
-    erroEl.textContent = "Já existe uma categoria com esse nome.";
-    erroEl.style.display = "block";
-    return;
-  }
-
-  dados.categorias[nome] = { icone, tipo, orcamento: tipo === "despesa" ? orcamento : 0 };
-  salvarDados();
-  fecharModalCategoria();
-  renderizarConfig();
-  atualizarTudo();
-}
-
-function excluirCategoria(nome){
-  if(confirm(`Deseja realmente excluir a categoria "${nome}"?`)){
-    delete dados.categorias[nome];
-    
-    Object.keys(dados.orcamentosMensais).forEach(periodo => {
-      delete dados.orcamentosMensais[periodo][nome];
-    });
-
-    salvarDados();
-    renderizarConfig();
-    atualizarTudo();
-  }
-}
-
-// ---------- EXPORTAÇÃO PARA EXCEL/GOOGLESHEETS (CSV) ----------
-function exportarParaCSV() {
-  if (dados.transacoes.length === 0) {
-    alert("Nenhum lançamento cadastrado para ser exportado.");
-    return;
-  }
-
-  let csvContent = "sep=;\nID;Data;Tipo;Categoria;Descrição;Valor;Forma de Pagamento\n";
-
-  dados.transacoes.forEach(t => {
-    const dataFormatada = formatarData(t.data);
-    const valorFormatado = t.valor.toFixed(2).replace(".", ",");
-    const categoria = `"${t.categoria.replace(/"/g, '""')}"`;
-    const descricao = `"${(t.descricao || '').replace(/"/g, '""')}"`;
-    const forma = `"${(t.forma || 'Não Informado').replace(/"/g, '""')}"`;
-    const tipo = t.tipo === "receita" ? "Receita" : "Despesa";
-
-    csvContent += `${t.id};${dataFormatada};${tipo};${categoria};${descricao};${valorFormatado};${forma}\n`;
+function calcularResumo(transacoes) {
+  let r = 0, d = 0, i = 0;
+  transacoes.forEach(t => {
+    const tipoReal = getTipoReal(t);
+    if(tipoReal === 'receita') r += t.valor;
+    else if(tipoReal === 'despesa') d += t.valor;
+    else if(tipoReal === 'investimento') i += t.valor;
   });
+  return { receitas: r, despesas: d, investimentos: i, saldo: r - d };
+}
+function formatarMoeda(v) { return v.toLocaleString('pt-BR', {style:'currency', currency:'BRL'}); }
 
-  const blob = new Blob(["\ufeff" + csvContent], { type: 'text/csv;charset=utf-8;' });
-  const url = URL.createObjectURL(blob);
+// ---------- DASHBOARD ----------
+function renderizarDashboard() {
+  const t = filtrarTransacoesDoPeriodo();
+  const resumo = calcularResumo(t);
   
-  const link = document.createElement("a");
-  link.setAttribute("href", url);
-  link.setAttribute("download", `controle_financeiro_luiz_${hojeISO()}.csv`);
-  link.style.visibility = 'hidden';
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+  document.getElementById("dash-receitas").textContent = formatarMoeda(resumo.receitas);
+  document.getElementById("dash-despesas").textContent = formatarMoeda(resumo.despesas);
+  document.getElementById("dash-investimentos").textContent = formatarMoeda(resumo.investimentos);
+  const elSaldo = document.getElementById("dash-saldo");
+  elSaldo.textContent = formatarMoeda(resumo.saldo);
+  elSaldo.style.color = resumo.saldo >= 0 ? "var(--saldo)" : "var(--despesa)";
 }
 
-// ---------- CÁLCULOS ----------
-function totalPorTipoNoPeriodo(tipo, transacoesFiltradas){
-  return transacoesFiltradas.filter(t=>t.tipo===tipo).reduce((soma,t)=>soma+t.valor,0);
+// ---------- ABA: ORÇAMENTOS (Lógica de Cores Refatorada) ----------
+function obterOrcamentoCategoria(nome) {
+  const chave = obterChavePeriodo();
+  if (dados.orcamentosMensais[chave] && dados.orcamentosMensais[chave][nome] !== undefined) {
+    return dados.orcamentosMensais[chave][nome];
+  }
+  return dados.categorias[nome]?.orcamento || 0;
 }
-
-function gastoPorCategoriaNoPeriodo(nome, transacoesFiltradas){
-  return transacoesFiltradas
-    .filter(t=>t.categoria===nome && t.tipo==="despesa")
-    .reduce((soma,t)=>soma+t.valor,0);
+function gastoPorCategoriaNoPeriodo(nome, transacoes) {
+  return transacoes
+    .filter(t => t.categoria === nome && getTipoReal(t) === "despesa")
+    .reduce((soma, t) => soma + t.valor, 0);
 }
-
-function formatarMoeda(v){
-  return "R$ " + v.toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2});
-}
-
-// ---------- RENDER: DASHBOARD ----------
-function atualizarTudo(){
-  const transacoesFiltradas = filtrarTransacoesDoPeriodo();
-  
-  const receitas = totalPorTipoNoPeriodo("receita", transacoesFiltradas);
-  const despesas = totalPorTipoNoPeriodo("despesa", transacoesFiltradas);
-  const saldo = receitas - despesas;
-
-  document.getElementById("receitas").textContent = formatarMoeda(receitas);
-  document.getElementById("despesas").textContent = formatarMoeda(despesas);
-  document.getElementById("saldo").textContent = formatarMoeda(saldo);
-  document.getElementById("saldo").style.color = saldo >= 0 ? "#03A9F4" : "#F44336";
-
-  renderizarCategorias(transacoesFiltradas);
-
-  const telaAtiva = document.querySelector(".tela.ativa").id.replace("tela-","");
-  if(telaAtiva==="receitas") renderizarTransacoes();
-  if(telaAtiva==="graficos") renderizarGraficos();
-  if(telaAtiva==="patrimonio") renderizarPatrimonio();
-  if(telaAtiva==="ia") iniciarAbaIa();
-  if(telaAtiva==="config") renderizarConfig();
-}
-
-function renderizarCategorias(transacoesFiltradas){
-  const lista = document.getElementById("lista-categorias");
+function renderizarCategorias() {
+  const lista = document.getElementById("lista-categorias-progresso");
   lista.innerHTML = "";
+  const transacoes = filtrarTransacoesDoPeriodo();
+
   Object.keys(dados.categorias)
     .filter(nome => dados.categorias[nome].tipo === "despesa")
-    .forEach(nome=>{
+    .forEach(nome => {
       const cat = dados.categorias[nome];
-      const gasto = gastoPorCategoriaNoPeriodo(nome, transacoesFiltradas);
-      const orcamento = obterOrcamentoCategoria(nome, dataFiltro);
+      const gasto = gastoPorCategoriaNoPeriodo(nome, transacoes);
+      const orcamento = obterOrcamentoCategoria(nome);
       
       const pct = orcamento > 0 ? Math.min((gasto/orcamento)*100, 100) : (gasto>0?100:0);
-      const pctReal = orcamento > 0 ? (gasto/orcamento)*100 : 0;
+      let cor = "", info = "";
 
-      let cor = "verde", info = "Dentro do orçamento.";
+      // Nova Regra de Negócio de Cores do Limite:
       if (orcamento === 0) {
-        info = gasto > 0 ? "Sem limite fixo estipulado." : "Sem gastos no período.";
-        cor = "verde";
-      } else if(pctReal >= 100){
+        info = gasto > 0 ? "Atenção: Categoria sem limite definido." : "Sem gastos no período.";
+        cor = "amarelo"; 
+      } else if (gasto > orcamento) {
         cor = "vermelho";
-        info = `Você ultrapassou ${formatarMoeda(gasto-orcamento)}.`;
-      } else if(pctReal >= 80){
+        info = `Ultrapassado em ${formatarMoeda(gasto-orcamento)}.`;
+      } else if (gasto >= (orcamento * 0.9)) {
         cor = "amarelo";
-        info = `Você atingiu ${Math.round(pctReal)}% do orçamento.`;
+        info = `Atenção: Faltam apenas ${formatarMoeda(orcamento-gasto)} para o limite!`;
       } else {
-        info = `Restam ${formatarMoeda(Math.max(orcamento-gasto,0))}.`;
+        cor = "verde";
+        info = `Confortável: Restam ${formatarMoeda(orcamento-gasto)}.`;
       }
 
       const div = document.createElement("div");
@@ -899,518 +558,44 @@ function renderizarCategorias(transacoesFiltradas){
     });
 }
 
-// ---------- RENDER: LANÇAMENTOS ----------
-function renderizarTransacoes(){
-  const lista = document.getElementById("lista-transacoes");
-  lista.innerHTML = "";
+// ---------- CONFIGURAÇÃO DE LIMITES ----------
+function renderizarConfig() {
+  const lista = document.getElementById("lista-orcamentos-config");
+  const chavePeriodo = obterChavePeriodo();
   
-  const transacoesFiltradas = filtrarTransacoesDoPeriodo();
-  const ordenadas = [...transacoesFiltradas].sort((a,b)=> new Date(b.data) - new Date(a.data));
-
-  if(ordenadas.length === 0){
-    lista.innerHTML = `<div class="vazio">Nenhum lançamento neste mês. Toque no + para adicionar.</div>`;
-    return;
-  }
-
-  ordenadas.forEach(t=>{
-    const cat = dados.categorias[t.categoria] || { icone: "fa-circle" };
-    const cor = t.tipo === "receita" ? "#4CAF50" : "#F44336";
-    const sinal = t.tipo === "receita" ? "+" : "-";
-    const htmlObs = t.descricao ? `<div class="obs"><i class="fa-regular fa-note-sticky"></i> ${t.descricao}</div>` : '';
-
-    const div = document.createElement("div");
-    div.className = "transacao";
-    div.innerHTML = `
-      <div style="display:flex;align-items:center;gap:12px;">
-        <i class="fa-solid ${cat.icone}" style="color:#d4af37;width:22px;"></i>
-        <div>
-          <div class="desc">${t.categoria}</div>
-          ${htmlObs}
-          <div class="data">${formatarData(t.data)} · ${t.forma || 'Não Informado'}</div>
-        </div>
-      </div>
-      <div style="display:flex;align-items:center;gap:12px;">
-        <b style="color:${cor}">${sinal} ${formatarMoeda(t.valor)}</b>
-        <i class="fa-solid fa-pen" style="color:#888;cursor:pointer;margin-left:8px;" onclick="abrirFormulario(${t.id})"></i>
-        <i class="fa-solid fa-trash" style="color:#666;cursor:pointer;margin-left:8px;" onclick="excluirTransacao(${t.id})"></i>
-      </div>`;
-    lista.appendChild(div);
-  });
-}
-function formatarData(iso){
-  const [ano,mes,dia] = iso.split("-");
-  return `${dia}/${mes}/${ano}`;
-}
-function excluirTransacao(id){
-  if(confirm("Deseja realmente excluir este lançamento?")){
-    dados.transacoes = dados.transacoes.filter(t=>t.id !== id);
-    salvarDados();
-    atualizarTudo();
-  }
-}
-
-// ---------- RENDER: PATRIMÔNIO (INVESTIMENTOS) ----------
-function renderizarPatrimonio(){
-  const totalInvestidoLancamentos = dados.transacoes
-    .filter(t => t.tipo === "receita" && t.categoria === "Investimentos")
-    .reduce((soma, t) => soma + t.valor, 0);
-
-  const patrimonioTotalCalculado = totalInvestidoLancamentos + dados.ajustePatrimonialManual;
-
-  document.getElementById("patrimonio-total").textContent = formatarMoeda(patrimonioTotalCalculado);
-  document.getElementById("input-ajuste-patrimonio").value = dados.ajustePatrimonialManual;
-
-  const listaInv = document.getElementById("lista-investimentos-historico");
-  listaInv.innerHTML = "";
-
-  const investimentos = dados.transacoes
-    .filter(t => t.categoria === "Investimentos")
-    .sort((a,b) => new Date(b.data) - new Date(a.data));
-
-  if (investimentos.length === 0) {
-    listaInv.innerHTML = `<div class="vazio">Nenhum aporte em investimentos registrado. Crie um lançamento na categoria "Investimentos" para somar ao seu patrimônio.</div>`;
-    return;
-  }
-
-  investimentos.forEach(t => {
-    const htmlObs = t.descricao ? `<div class="obs"><i class="fa-regular fa-note-sticky"></i> ${t.descricao}</div>` : '';
-    const div = document.createElement("div");
-    div.className = "transacao";
-    div.style.borderLeft = "4px solid #E91E63";
-    div.innerHTML = `
-      <div style="display:flex;align-items:center;gap:12px;">
-        <i class="fa-solid fa-circle-dollar-to-slot" style="color:#E91E63; width:22px;"></i>
-        <div>
-          <div class="desc">Aporte de Investimento</div>
-          ${htmlObs}
-          <div class="data">${formatarData(t.data)} · ${t.forma}</div>
-        </div>
-      </div>
-      <div>
-        <b style="color:#4CAF50">+ ${formatarMoeda(t.valor)}</b>
-      </div>`;
-    listaInv.appendChild(div);
-  });
-}
-
-function salvarAjustePatrimonial(){
-  const valorInput = parseFloat(document.getElementById("input-ajuste-patrimonio").value);
-  if(!isNaN(valorInput)) {
-    dados.ajustePatrimonialManual = valorInput;
-    salvarDados();
-    renderizarPatrimonio();
-    alert("Rendimentos patrimoniais reajustados!");
-  }
-}
-
-// ---------- RENDER: GRÁFICOS (DESIGN REFINADO & LIMPO) ----------
-function renderizarGraficos(){
-  const anoFiltro = dataFiltro.getFullYear();
-  const mesesAbreviados = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
-  
-  const receitasMensais = Array(12).fill(0);
-  const despesasMensais = Array(12).fill(0);
-  const patrimonioAcumulado = Array(12).fill(0);
-
-  let totalInvestidoHistorico = 0;
-
-  dados.transacoes.forEach(t => {
-    const [ano, mes, dia] = t.data.split('-').map(Number);
-    if(ano === anoFiltro) {
-      const mesIdx = mes - 1;
-      if(t.tipo === "receita") {
-        receitasMensais[mesIdx] += t.valor;
-      } else {
-        despesasMensais[mesIdx] += t.valor;
-      }
-    }
-    if(t.categoria === "Investimentos") {
-      const mesIdx = mes - 1;
-      totalInvestidoHistorico += t.valor;
-      if(ano === anoFiltro) {
-        patrimonioAcumulado[mesIdx] = totalInvestidoHistorico;
-      }
-    }
-  });
-
-  let ultimoSaldoPatrimonio = 0;
-  for(let i=0; i<12; i++){
-    if(patrimonioAcumulado[i] === 0) {
-      patrimonioAcumulado[i] = ultimoSaldoPatrimonio;
-    } else {
-      ultimoSaldoPatrimonio = patrimonioAcumulado[i];
-    }
-  }
-
-  const transacoesDoMes = filtrarTransacoesDoPeriodo();
-
-  // --- GRÁFICO 1: PIZZA / DONUT DE CATEGORIAS (OTIMIZADO TOP 5 + OUTROS) ---
-  const ctxCategorias = document.getElementById("graficoCategorias").getContext("2d");
-  if(graficoCategoriasChart) graficoCategoriasChart.destroy();
-
-  const nomesDespesa = Object.keys(dados.categorias).filter(n=>dados.categorias[n].tipo==="despesa");
-  const listaGastos = [];
-  let totalGastosMes = 0;
-
-  nomesDespesa.forEach(nome => {
-    const gasto = gastoPorCategoriaNoPeriodo(nome, transacoesDoMes);
-    if(gasto > 0) {
-      listaGastos.push({ nome, gasto });
-      totalGastosMes += gasto;
-    }
-  });
-
-  if(listaGastos.length === 0) {
-    graficoCategoriasChart = new Chart(ctxCategorias, {
-      type: "doughnut",
-      data: { labels: ["Sem registros no mês"], datasets: [{ data: [1], backgroundColor: ["#222"] }] },
-      options: { plugins: { title: { display: true, text: "Nenhum gasto registrado neste mês", color: "#888" } } }
-    });
-  } else {
-    // Ordena do maior para o menor
-    listaGastos.sort((a,b) => b.gasto - a.gasto);
-
-    const topCategorias = listaGastos.slice(0, 5);
-    const outrasCategorias = listaGastos.slice(5);
-
-    const labelsAtivas = topCategorias.map(item => item.nome);
-    const valoresAtivos = topCategorias.map(item => item.gasto);
-
-    if(outrasCategorias.length > 0) {
-      const somaOutros = outrasCategorias.reduce((soma, item) => soma + item.gasto, 0);
-      labelsAtivas.push("Outras categorias");
-      valoresAtivos.push(somaOutros);
-    }
-
-    const coresElegantes = ["#d4af37", "#4CAF50", "#03A9F4", "#E91E63", "#FF9800", "#795548"];
-
-    graficoCategoriasChart = new Chart(ctxCategorias, {
-      type: "doughnut",
-      data: {
-        labels: labelsAtivas,
-        datasets: [{
-          data: valoresAtivos,
-          backgroundColor: coresElegantes.slice(0, labelsAtivas.length),
-          borderWidth: 2,
-          borderColor: "#171717"
-        }]
-      },
-      options: {
-        cutout: '65%',
-        responsive: true,
-        plugins: {
-          legend: {
-            position: 'bottom',
-            labels: { color: "#eee", font: { size: 12 }, padding: 15 }
-          },
-          title: {
-            display: true,
-            text: `Top Maiores Despesas (${formatarMoeda(totalGastosMes)})`,
-            color: "#d4af37",
-            font: { size: 15, weight: 'bold' }
-          },
-          tooltip: {
-            callbacks: {
-              label: function(context) {
-                const val = context.raw;
-                const pct = ((val / totalGastosMes) * 100).toFixed(1);
-                return ` ${context.label}: ${formatarMoeda(val)} (${pct}%)`;
-              }
-            }
-          }
-        }
-      }
-    });
-  }
-
-  // --- GRÁFICO 2: FLUXO DE CAIXA ANUAL ---
-  const ctxAnual = document.getElementById("graficoAnualComparativo").getContext("2d");
-  if(graficoAnualChart) graficoAnualChart.destroy();
-  graficoAnualChart = new Chart(ctxAnual, {
-    type: "bar",
-    data: {
-      labels: mesesAbreviados,
-      datasets: [
-        { label: "Receitas", data: receitasMensais, backgroundColor: "#4CAF50", borderRadius: 4 },
-        { label: "Despesas", data: despesasMensais, backgroundColor: "#F44336", borderRadius: 4 }
-      ]
-    },
-    options: {
-      responsive: true,
-      plugins: { legend: { labels: { color: "#ccc" } }, title: { display: true, text: `Evolução de Fluxo de Caixa — ${anoFiltro}`, color: "#d4af37", font: { size: 14 } } },
-      scales: { x: { ticks: { color: "#ccc" } }, y: { ticks: { color: "#ccc" } } }
-    }
-  });
-
-  // --- GRÁFICO 3: MÉTODOS DE PAGAMENTO ---
-  const metodosDisponiveis = ["PIX", "Débito", "Crédito", "VA/VR", "Dinheiro", "Boleto", "Débito Automático"];
-  const somaPorMetodo = Array(metodosDisponiveis.length).fill(0);
-  transacoesDoMes.filter(t => t.tipo === "despesa").forEach(t => {
-    const formaNormalizada = t.forma || "PIX";
-    const idx = metodosDisponiveis.indexOf(formaNormalizada);
-    if(idx !== -1) somaPorMetodo[idx] += t.valor;
-  });
-
-  const ctxMetodos = document.getElementById("graficoMetodosPagamento").getContext("2d");
-  if(graficoMetodosChart) graficoMetodosChart.destroy();
-  graficoMetodosChart = new Chart(ctxMetodos, {
-    type: "bar",
-    data: {
-      labels: metodosDisponiveis,
-      datasets: [{ label: "Total Gasto", data: somaPorMetodo, backgroundColor: "#03A9F4", borderRadius: 4 }]
-    },
-    options: {
-      indexAxis: 'y',
-      responsive: true,
-      plugins: { legend: { display: false }, title: { display: true, text: "Gastos por Canal de Pagamento (Mês)", color: "#d4af37" } },
-      scales: { x: { ticks: { color: "#ccc" } }, y: { ticks: { color: "#ccc" } } }
-    }
-  });
-
-  // --- GRÁFICO 4: PATRIMÔNIO ACUMULADO ---
-  const ctxPatrimonio = document.getElementById("graficoPatrimonioHistorico").getContext("2d");
-  if(graficoPatrimonioChart) graficoPatrimonioChart.destroy();
-  graficoPatrimonioChart = new Chart(ctxPatrimonio, {
-    type: "line",
-    data: {
-      labels: mesesAbreviados,
-      datasets: [{
-        label: "Investimentos Acumulados",
-        data: patrimonioAcumulado,
-        borderColor: "#E91E63",
-        backgroundColor: "rgba(233, 30, 99, 0.15)",
-        fill: true,
-        tension: 0.3
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: { legend: { display: false }, title: { display: true, text: `Crescimento de Patrimônio — ${anoFiltro}`, color: "#d4af37" } },
-      scales: { x: { ticks: { color: "#ccc" } }, y: { ticks: { color: "#ccc" } } }
-    }
-  });
-}
-
-// ---------- RENDER: MÓDULO L7-IA (ASSISTENTE INTELIGENTE) ----------
-function iniciarAbaIa() {
-  const container = document.getElementById("ia-historico-chat");
-  if(container.children.length === 0) {
-    const transacoesDoMes = filtrarTransacoesDoPeriodo();
-    const receitas = totalPorTipoNoPeriodo("receita", transacoesDoMes);
-    const despesas = totalPorTipoNoPeriodo("despesa", transacoesDoMes);
-    const saldo = receitas - despesas;
-
-    let saudacao = `Olá! Sou o **L7-IA**, seu conselheiro financeiro pessoal. 👋<br><br>`;
-    saudacao += `Estou analisando seu mês atual (**${receitas > 0 ? 'Receitas: ' + formatarMoeda(receitas) : 'Sem receitas cadastradas'}** | **Despesas: ${formatarMoeda(despesas)}**).<br><br>`;
-    
-    if(saldo <= 0 && despesas > 0) {
-      saudacao += `⚠️ **Atenção:** Você está operando no vermelho ou no limite! Tem certeza de que quer assumir novas contas agora ou prefere dar um enxugada nos gastos?`;
-    } else if(saldo > 0) {
-      saudacao += `Seu saldo livre estimado é de **${formatarMoeda(saldo)}**. Como posso te ajudar a tomar a melhor decisão hoje? Pode me perguntar sobre novas contas, planos para trocar de carro ou comprar um imóvel!`;
-    } else {
-      saudacao += `Cadastre suas movimentações no app para que eu faça análises cirúrgicas do seu perfil financeiro!`;
-    }
-
-    adicionarMensagemIa("ia", saudacao);
-  }
-}
-
-function adicionarMensagemIa(origem, texto) {
-  const container = document.getElementById("ia-historico-chat");
-  const div = document.createElement("div");
-  div.className = `ia-box-msg ${origem === "usuario" ? "usuario" : ""}`;
-  
-  const icone = origem === "usuario" ? "fa-user" : "fa-robot";
-  const nome = origem === "usuario" ? "Você" : "L7-IA Conselheiro";
-
-  div.innerHTML = `
-    <div class="ia-header"><i class="fa-solid ${icone}"></i> <span>${nome}</span></div>
-    <div class="ia-body">${texto.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</div>
-  `;
-
-  container.appendChild(div);
-  div.scrollIntoView({ behavior: 'smooth' });
-}
-
-function tratarKeyPressIa(event) {
-  if (event.key === "Enter") {
-    enviarPerguntaIa();
-  }
-}
-
-function perguntarIaPredefinida(pergunta) {
-  document.getElementById("input-ia-pergunta").value = pergunta;
-  enviarPerguntaIa();
-}
-
-function enviarPerguntaIa() {
-  const input = document.getElementById("input-ia-pergunta");
-  const pergunta = input.value.trim();
-  if(!pergunta) return;
-
-  adicionarMensagemIa("usuario", pergunta);
-  input.value = "";
-
-  setTimeout(() => {
-    processarRespostaIa(pergunta);
-  }, 400);
-}
-
-function processarRespostaIa(pergunta) {
-  const transacoesDoMes = filtrarTransacoesDoPeriodo();
-  const receitas = totalPorTipoNoPeriodo("receita", transacoesDoMes);
-  const despesas = totalPorTipoNoPeriodo("despesa", transacoesDoMes);
-  const saldoLivre = receitas - despesas;
-
-  const valorEncontrado = pergunta.match(/\d+[\d\.,]*/);
-  let valorSimulacao = 0;
-  if (valorEncontrado) {
-    valorSimulacao = parseFloat(valorEncontrado[0].replace(".", "").replace(",", "."));
-  }
-
-  const perguntaLower = pergunta.toLowerCase();
-  let resposta = "";
-
-  // 1. Pergunta sobre assumir novo gasto mensal (Ex: 500 reais)
-  if (perguntaLower.includes("posso") || perguntaLower.includes("conta") || perguntaLower.includes("assumir") || perguntaLower.includes("gastar")) {
-    if (valorSimulacao > 0) {
-      if (saldoLivre >= valorSimulacao) {
-        const sobraAposGasto = saldoLivre - valorSimulacao;
-        resposta = `Analisei seu orçamento: Você tem **${formatarMoeda(saldoLivre)}** de saldo livre no mês. <br><br>`;
-        resposta += `Matematicamente **SIM**, você consegue pagar essa parcela de **${formatarMoeda(valorSimulacao)}**. Sobrarão **${formatarMoeda(sobraAposGasto)}**.<br><br>`;
-        resposta += `🔥 **Mas fica a provocação:** Você tem *certeza* de que deseja aumentar seu custo fixo mensal? Se você direcionar esses **${formatarMoeda(valorSimulacao)}** para seus aportes ou investimentos todos os meses, em 1 ano você terá mais de **${formatarMoeda(valorSimulacao * 12)}** acumulados!<br><br>`;
-        resposta += `💡 *Que tal enxugar despesas superficiais primeiro para não comprometer sua margem de segurança?*`;
-      } else {
-        const dfeicid = valorSimulacao - saldoLivre;
-        resposta = `🚨 **Cuidado! A conta não fecha.**<br><br>`;
-        resposta += `Seu saldo livre no mês é de **${formatarMoeda(saldoLivre)}**. Assumir uma despesa de **${formatarMoeda(valorSimulacao)}** vai deixar seu orçamento **${formatarMoeda(dfeicid)} no vermelho** todos os meses!<br><br>`;
-        resposta += `🎯 **Minha recomendação urgente:** Não assuma esta conta agora. Para fazer esse investimento caber no seu bolso, sugiro reduzir seus custos em categorias de consumo livre (como Lazer ou Compras). Você quer que eu te ajude a cortar gastos?`;
-      }
-    } else {
-      resposta = `Para te dar uma resposta precisa sobre essa nova despesa, me diga o valor exato! Exemplo: *"Posso fazer uma conta de R$ 400,00?"*`;
-    }
-  } 
-  // 2. Análise Geral de Saúde Financeira
-  else if (perguntaLower.includes("saúde") || perguntaLower.includes("como está") || perguntaLower.includes("análise")) {
-    const pctComprometido = receitas > 0 ? (despesas / receitas) * 100 : 0;
-    
-    resposta = `📊 **Diagnóstico Financeiro do Mês:**<br><br>`;
-    resposta += `• **Receita Total:** ${formatarMoeda(receitas)}<br>`;
-    resposta += `• **Despesas Totais:** ${formatarMoeda(despesas)}<br>`;
-    resposta += `• **Comprometimento da Renda:** ${pctComprometido.toFixed(1)}%<br><br>`;
-
-    if (pctComprometido > 90) {
-      resposta += `⚠️ **Sua saúde financeira atual exige atenção imediata!** Você está gastando quase tudo o que ganha. Recomendo congelar novos custos e criar uma Reserva de Emergência urgente.`;
-    } else if (pctComprometido > 70) {
-      resposta += `🟡 **Estado Moderado.** Seu orçamento está cobrindo as contas, mas sobra pouca margem para construir patrimônio rápido. Aumente seus aportes!`;
-    } else {
-      resposta += `🟢 **Excelente saúde financeira!** Você está retendo uma boa parte da sua renda. Que tal traçar metas maiores de longo prazo agora?`;
-    }
-  }
-  // 3. Planos de Vida (Carro, Casa, Imóvel)
-  else if (perguntaLower.includes("carro") || perguntaLower.includes("veículo")) {
-    resposta = `🚗 **Planejamento para Compra/Troca de Carro:**<br><br>`;
-    resposta += `Comprar ou trocar de carro envolve não só as parcelas, mas também combustível, IPVA, seguro e manutenção.<br><br>`;
-    resposta += `💡 **Provocação:** Em vez de comprometer sua renda com parcelas com juros altos, que tal juntarmos um aporte mensal fixo para comprar à vista ou dar uma entrada expressiva?<br><br>`;
-    resposta += `Você gostaria que eu te ajudasse a calcular quanto precisa guardar mensalmente para conquistar esse carro em 12 ou 24 meses?`;
-  }
-  else if (perguntaLower.includes("apartamento") || perguntaLower.includes("terreno") || perguntaLower.includes("imóvel") || perguntaLower.includes("casa")) {
-    resposta = `🏠 **Planejamento para Imóvel/Terreno:**<br><br>`;
-    resposta += `Um imóvel é um marco patrimonial sensacional! Mas exige disciplina nos aportes para a entrada e custos de documentação.<br><br>`;
-    resposta += `Com o seu perfil financeiro atual, você pode destinar uma porcentagem fixa do seu saldo mensal direto para a aba **Patrimônio** do L7 Control.<br><br>`;
-    resposta += `Deseja montar uma estratégia de investimentos focada na entrada do seu novo imóvel?`;
-  }
-  // 4. Resposta Genérica Inteligente
-  else {
-    resposta = `Entendi sua dúvida! Com base nos seus lançamentos atuais (Saldo Livre: **${formatarMoeda(saldoLivre)}**):<br><br>`;
-    resposta += `Minha missão no **L7-IA** é garantir que você não tome decisões por impulso. Lembre-se: antes de assumir novos custos, priorize guardar pelo menos **20% das suas receitas** para investimentos.<br><br>`;
-    resposta += `Como posso te ajudar a organizar seus próximos passos financeiros?`;
-  }
-
-  adicionarMensagemIa("ia", resposta);
-}
-
-// ---------- RENDER: CONFIG ----------
-function renderizarConfig(){
-  const lista = document.getElementById("lista-orcamentos");
-  const chavePeriodo = obterChavePeriodo(dataFiltro);
-  const [ano, mes] = chavePeriodo.split("-");
-  const mesesNomes = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
-  const mesNome = mesesNomes[parseInt(mes) - 1];
-
-  lista.innerHTML = `
-    <button class="btn-primario" onclick="abrirModalCategoria()" style="margin-bottom:20px;">
-      <i class="fa-solid fa-plus"></i> Criar Nova Categoria
-    </button>
-    
-    <div style="background: rgba(212,175,55,0.06); padding: 15px; border-radius: 15px; border: 1px dashed #d4af37; margin-bottom: 20px; text-align: center;">
-      <span style="font-size: 13px; color: #ccc; display: block; margin-bottom: 5px;">Configurando Limites para:</span>
-      <strong style="color: #d4af37; font-size: 18px;"><i class="fa-solid fa-calendar-days"></i> ${mesNome} / ${ano}</strong>
-    </div>
-
-    <h3 style="color:#d4af37;margin:10px 0 15px;font-size:16px;">Limites de Despesas (R$)</h3>
-  `;
+  lista.innerHTML = `<h3 style="color:var(--primary);margin:10px 0 15px;font-size:15px;">Definir Limites (Para o Período Atual)</h3>`;
 
   Object.keys(dados.categorias)
     .filter(nome => dados.categorias[nome].tipo === "despesa")
-    .forEach(nome=>{
+    .forEach(nome => {
       const cat = dados.categorias[nome];
-      const limiteAtual = obterOrcamentoCategoria(nome, dataFiltro);
+      const limiteAtual = obterOrcamentoCategoria(nome);
 
       const div = document.createElement("div");
       div.className = "config-item";
       div.innerHTML = `
         <div class="cab">
-          <div><i class="fa-solid ${cat.icone}" style="color:#d4af37;"></i>&nbsp; ${nome}</div>
-          <i class="fa-solid fa-trash" style="color:#F44336;cursor:pointer;" onclick="excluirCategoria('${nome}')" title="Excluir categoria"></i>
+          <div><i class="fa-solid ${cat.icone}" style="color:var(--primary);"></i>&nbsp; ${nome}</div>
+          <i class="fa-solid fa-trash" style="color:var(--despesa);cursor:pointer;" onclick="excluirCategoria('${nome}')"></i>
         </div>
         <input type="number" class="input-limite-mensal" data-categoria="${nome}" min="0" step="0.01" value="${limiteAtual}" placeholder="Limite R$">`;
       lista.appendChild(div);
     });
 
-  const containerBtnSalvar = document.createElement("div");
-  containerBtnSalvar.style.margin = "20px 0 30px 0";
-  containerBtnSalvar.innerHTML = `
-    <button class="btn-primario" onclick="salvarLimitesEmLote()" style="background: #4CAF50; color: white;">
-      <i class="fa-solid fa-floppy-disk"></i> Salvar Limites do Mês (${mesNome})
-    </button>
-  `;
-  lista.appendChild(containerBtnSalvar);
-
-  const h3Rec = document.createElement("h3");
-  h3Rec.style = "color:#4CAF50;margin:25px 0 15px;font-size:16px;";
-  h3Rec.textContent = "Categorias de Receitas";
-  lista.appendChild(h3Rec);
-
-  Object.keys(dados.categorias)
-    .filter(nome => dados.categorias[nome].tipo === "receita")
-    .forEach(nome=>{
-      const cat = dados.categorias[nome];
-      const div = document.createElement("div");
-      div.className = "config-item";
-      div.innerHTML = `
-        <div class="cab" style="margin-bottom:0;">
-          <div><i class="fa-solid ${cat.icone}" style="color:#4CAF50;"></i>&nbsp; ${nome}</div>
-          <i class="fa-solid fa-trash" style="color:#F44336;cursor:pointer;" onclick="excluirCategoria('${nome}')" title="Excluir categoria"></i>
-        </div>`;
-      lista.appendChild(div);
-    });
+  const btnSalvar = document.createElement("div");
+  btnSalvar.style.marginTop = "15px";
+  btnSalvar.innerHTML = `<button class="btn-primario" onclick="salvarLimitesEmLote()" style="background:#4CAF50;color:white;"><i class="fa-solid fa-floppy-disk"></i> Salvar Limites</button>`;
+  lista.appendChild(btnSalvar);
 }
-
-function salvarLimitesEmLote(){
+function salvarLimitesEmLote() {
   const inputs = document.querySelectorAll(".input-limite-mensal");
-  const chavePeriodo = obterChavePeriodo(dataFiltro);
-
-  if(!dados.orcamentosMensais[chavePeriodo]){
-    dados.orcamentosMensais[chavePeriodo] = {};
-  }
+  const chave = obterChavePeriodo();
+  if(!dados.orcamentosMensais[chave]) dados.orcamentosMensais[chave] = {};
 
   inputs.forEach(input => {
     const nomeCat = input.getAttribute("data-categoria");
     const valor = parseFloat(input.value);
-    if(!isNaN(valor) && valor >= 0){
-      dados.orcamentosMensais[chavePeriodo][nomeCat] = valor;
-    }
+    if(!isNaN(valor) && valor >= 0) dados.orcamentosMensais[chave][nomeCat] = valor;
   });
 
   salvarDados();
@@ -1418,28 +603,288 @@ function salvarLimitesEmLote(){
   
   const alerta = document.getElementById("status-salvamento");
   alerta.style.display = "block";
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-  setTimeout(() => {
-    alerta.style.display = "none";
-  }, 3500);
+  setTimeout(() => alerta.style.display = "none", 3500);
+}
+function excluirCategoria(nome) {
+  if(confirm(`Excluir a categoria "${nome}"?`)) {
+    delete dados.categorias[nome];
+    salvarDados();
+    atualizarTudo();
+  }
 }
 
-// ---------- RESET ----------
-function confirmarReset(){
-  document.getElementById("modal-reset").style.display = "block";
+// ---------- EXTRATO ----------
+function renderizarTransacoes() {
+  const lista = document.getElementById("lista-transacoes");
+  lista.innerHTML = "";
+  const t = filtrarTransacoesDoPeriodo().sort((a,b)=> new Date(b.data) - new Date(a.data));
+  if(t.length === 0) { lista.innerHTML = `<div class="vazio">Sem lançamentos no período selecionado.</div>`; return; }
+
+  t.forEach(item => {
+    const tipo = getTipoReal(item);
+    let cor = "var(--despesa)", sinal = "-";
+    if(tipo === 'receita') { cor = "var(--receita)"; sinal = "+"; }
+    else if(tipo === 'investimento') { cor = "var(--investimento)"; sinal = "+"; }
+
+    const div = document.createElement("div"); div.className = "transacao";
+    div.innerHTML = `
+      <div>
+        <div class="desc">${item.categoria} ${item.descricao ? '<span style="color:#777;font-weight:400;"> - '+item.descricao+'</span>':''}</div>
+        <div class="data">${item.data.split('-').reverse().join('/')}</div>
+      </div>
+      <div style="display:flex; align-items:center; gap:10px;">
+        <b style="color:${cor}">${sinal} ${formatarMoeda(item.valor)}</b>
+        <i class="fa-solid fa-trash" style="color:#666;cursor:pointer;" onclick="excluirTransacao(${item.id})"></i>
+      </div>
+    `;
+    lista.appendChild(div);
+  });
 }
-function resetarDados(){
-  localStorage.removeItem(CHAVE_DADOS);
-  dados = carregarDados();
-  dados.transacoes = [];
+function excluirTransacao(id) {
+  if(confirm("Excluir este lançamento?")) {
+    dados.transacoes = dados.transacoes.filter(t => t.id !== id);
+    salvarDados();
+    atualizarTudo();
+  }
+}
+
+// ---------- PATRIMÔNIO ----------
+function renderizarPatrimonio() {
+  const todosAportes = dados.transacoes.filter(t => getTipoReal(t) === 'investimento');
+  const totalLancamentos = todosAportes.reduce((sum, t) => sum + t.valor, 0);
+  const totalGeral = totalLancamentos + (dados.ajustePatrimonialManual || 0);
+
+  document.getElementById("patrimonio-total").textContent = formatarMoeda(totalGeral);
+  document.getElementById("input-ajuste-patrimonio").value = dados.ajustePatrimonialManual || "";
+
+  const lista = document.getElementById("lista-investimentos-historico");
+  lista.innerHTML = "";
+  
+  const ordenados = [...todosAportes].sort((a,b)=> new Date(b.data) - new Date(a.data));
+  ordenados.forEach(t => {
+    const d = document.createElement("div"); d.className = "transacao";
+    d.innerHTML = `
+      <div><div class="desc">${t.categoria}</div><div class="data">${t.data.split('-').reverse().join('/')} ${t.descricao?' - '+t.descricao:''}</div></div>
+      <div style="color:var(--investimento); font-weight:bold;">+ ${formatarMoeda(t.valor)}</div>
+    `;
+    lista.appendChild(d);
+  });
+}
+function salvarAjustePatrimonial() {
+  dados.ajustePatrimonialManual = parseFloat(document.getElementById("input-ajuste-patrimonio").value) || 0;
   salvarDados();
-  document.getElementById("modal-reset").style.display = "none";
+  renderizarPatrimonio();
+}
+
+// ---------- L7-IA INSIGHTS (Diagnóstico Avançado) ----------
+function renderizarIA() {
+  const transacoes = filtrarTransacoesDoPeriodo();
+  if(transacoes.length === 0) {
+    document.getElementById("ia-insights-container").innerHTML = `<div class="vazio">Sem dados no período para análise.</div>`;
+    return;
+  }
+  const {receitas, despesas, investimentos, saldo} = calcularResumo(transacoes);
+  
+  // 1. Esforço de Poupança
+  const taxaPoupanca = receitas > 0 ? (investimentos / receitas) * 100 : (investimentos > 0 ? 100 : 0);
+  let corPoupanca = taxaPoupanca >= 20 ? 'verde' : (taxaPoupanca > 0 ? 'amarelo' : 'vermelho');
+  let txtPoupanca = taxaPoupanca >= 20 ? 'Excelente! Você protegeu uma ótima fatia do seu capital.' : 'Abaixo do ideal. O mercado sugere mirar em 20% para a construção de riqueza sólida.';
+
+  // 2. Comprometimento de Renda
+  const taxaComprometimento = receitas > 0 ? (despesas / receitas) * 100 : (despesas > 0 ? 100 : 0);
+  let corComp = taxaComprometimento > 80 ? 'vermelho' : (taxaComprometimento >= 70 ? 'amarelo' : 'verde');
+  let txtComp = taxaComprometimento > 80 ? 'Alerta Crítico: Risco de endividamento. Suas saídas estão sufocando suas entradas.' : (taxaComprometimento >= 70 ? 'Atenção: Margem de segurança apertada.' : 'Saudável. Seu custo de vida está controlado.');
+
+  // 3. Maior Ralo
+  const gastosCat = {};
+  transacoes.forEach(t => {
+    if(getTipoReal(t) === 'despesa') gastosCat[t.categoria] = (gastosCat[t.categoria] || 0) + t.valor;
+  });
+  const catsOrdenadas = Object.keys(gastosCat).sort((a,b) => gastosCat[b] - gastosCat[a]);
+  const raloNome = catsOrdenadas[0] || 'Nenhuma';
+  const raloValor = gastosCat[raloNome] || 0;
+  
+  // 4. Motor Lógico de Dicas Avançadas
+  let dicasHTML = '';
+  
+  if (taxaComprometimento > 80) {
+    dicasHTML += `<li><i class="fa-solid fa-triangle-exclamation" style="color:var(--despesa);"></i> <b>Modo Sobrevivência:</b> Seu custo fixo está altíssimo. A regra de ouro (50/30/20) pede que essenciais fiquem em 50%. A categoria <b>${raloNome}</b> é a candidata ideal para você começar os cortes urgentes.</li>`;
+  } else if (taxaComprometimento >= 70) {
+    dicasHTML += `<li><i class="fa-solid fa-bell" style="color:#FFC107;"></i> <b>Aperte os Cintos:</b> Seu padrão de vida consome muito da sua receita, deixando pouco para imprevistos. Tente diminuir pequenas despesas diárias (variáveis) para abrir espaço.</li>`;
+  }
+
+  if (saldo < 0) {
+    dicasHTML += `<li><i class="fa-solid fa-circle-down" style="color:var(--despesa);"></i> <b>Déficit Operacional:</b> Você gastou <b>${formatarMoeda(Math.abs(saldo))}</b> a mais do que ganhou. Evite cobrir isso com limite de cheque especial ou rotativo do cartão (juros altos). Tente priorizar a quitação desse rombo no próximo mês.</li>`;
+  } else if (saldo > 0 && taxaPoupanca < 10) {
+    dicasHTML += `<li><i class="fa-solid fa-arrow-trend-up" style="color:var(--saldo);"></i> <b>Oportunidade Perdida:</b> Você fechou positivo com <b>${formatarMoeda(saldo)}</b> sobrando em caixa! Não deixe esse dinheiro parado perdendo para a inflação. Que tal enviar isso para a aba de "Aportes"?</li>`;
+  }
+
+  if (taxaPoupanca >= 20) {
+    dicasHTML += `<li><i class="fa-solid fa-medal" style="color:var(--primary);"></i> <b>Investidor Disciplinado:</b> Com ${taxaPoupanca.toFixed(1)}% de poupança, seu futuro está blindado. O próximo passo é garantir que seu "Patrimônio" esteja bem diversificado (ex: Reserva de Emergência e Ações/FIIs) para a mágica dos juros compostos agir.</li>`;
+  } else if (taxaPoupanca > 0 && taxaPoupanca < 20) {
+    dicasHTML += `<li><i class="fa-solid fa-seedling" style="color:var(--receita);"></i> <b>Potencialize os Aportes:</b> Você está guardando dinheiro, e isso já é uma vitória! Porém, para acelerar sua independência financeira, lance o desafio de tentar elevar os investimentos gradativamente até atingir a marca de 20%.</li>`;
+  }
+
+  if(dicasHTML === '') {
+    dicasHTML = `<li><i class="fa-solid fa-check-double" style="color:var(--receita);"></i> <b>Piloto Automático:</b> Suas finanças estão rodando perfeitamente saudáveis neste período. Continue acompanhando e revisando seus orçamentos.</li>`;
+  }
+
+  const html = `
+    <div class="ia-card ${corPoupanca}">
+      <div class="ia-header"><i class="fa-solid fa-piggy-bank"></i> Esforço de Poupança</div>
+      <div class="ia-valor">${taxaPoupanca.toFixed(1)}%</div>
+      <div class="ia-texto">${txtPoupanca}</div>
+    </div>
+    <div class="ia-card ${corComp}">
+      <div class="ia-header"><i class="fa-solid fa-chart-line"></i> Comprometimento de Renda</div>
+      <div class="ia-valor">${taxaComprometimento.toFixed(1)}%</div>
+      <div class="ia-texto">${txtComp}</div>
+    </div>
+    <div class="ia-card roxo">
+      <div class="ia-header"><i class="fa-solid fa-search-dollar"></i> Maior Ralo de Dinheiro</div>
+      <div class="ia-valor" style="font-size:22px;">${raloNome} (${formatarMoeda(raloValor)})</div>
+      <div class="ia-texto">Maior concentrador de saídas. Avalie se esse consumo está perfeitamente alinhado aos seus objetivos.</div>
+    </div>
+
+    <div class="ia-recomendacoes" style="background:#222; border-radius:18px; padding:20px; margin-top:5px; border-left:4px solid var(--primary);">
+        <h3 style="color:var(--primary); font-size:16px; margin-bottom:15px;"><i class="fa-solid fa-wand-magic-sparkles"></i> Diagnóstico L7-IA</h3>
+        <ul style="list-style:none; padding:0; display:flex; flex-direction:column; gap:12px; font-size:13px; color:#ddd; line-height:1.6;">
+            ${dicasHTML}
+        </ul>
+    </div>
+  `;
+  document.getElementById("ia-insights-container").innerHTML = html;
+}
+
+// ---------- ANALYTICS (GRÁFICOS) ----------
+function renderizarGraficos() {
+  const transacoes = filtrarTransacoesDoPeriodo();
+  const resumo = calcularResumo(transacoes);
+
+  if(chartResumo) chartResumo.destroy();
+  chartResumo = new Chart(document.getElementById("chartResumo"), {
+    type: 'bar',
+    data: {
+      labels: ['Entradas', 'Saídas', 'Aportes'],
+      datasets: [{ data: [resumo.receitas, resumo.despesas, resumo.investimentos], backgroundColor: ['#4CAF50', '#F44336', '#9C27B0'], borderRadius: 5 }]
+    },
+    options: { plugins: { legend: { display: false } }, scales: { y: { ticks: { color: "#888" }, grid: { color: "#333" } }, x: { ticks: { color: "#ccc" } } } }
+  });
+
+  const rotulos = [];
+  const dadosR = [], dadosD = [], dadosSaldoLine = [];
+  
+  if (modoFiltro === 'mensal') {
+    rotulos.push("Sem 1", "Sem 2", "Sem 3", "Sem 4", "Sem 5");
+    const semR = [0,0,0,0,0], semD = [0,0,0,0,0];
+    transacoes.forEach(t => {
+      const dia = parseInt(t.data.split('-')[2]);
+      const idx = Math.min(Math.floor((dia - 1) / 7), 4);
+      if(getTipoReal(t) === 'receita') semR[idx] += t.valor;
+      if(getTipoReal(t) === 'despesa') semD[idx] += t.valor;
+    });
+    let acc = 0;
+    for(let i=0; i<5; i++){ dadosR.push(semR[i]); dadosD.push(semD[i]); acc += (semR[i] - semD[i]); dadosSaldoLine.push(acc); }
+  } else {
+    const mesesAbrev = ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
+    rotulos.push(...mesesAbrev);
+    const mesR = Array(12).fill(0), mesD = Array(12).fill(0);
+    transacoes.forEach(t => {
+      const mes = parseInt(t.data.split('-')[1]) - 1;
+      if(getTipoReal(t) === 'receita') mesR[mes] += t.valor;
+      if(getTipoReal(t) === 'despesa') mesD[mes] += t.valor;
+    });
+    let acc = 0;
+    for(let i=0; i<12; i++){ dadosR.push(mesR[i]); dadosD.push(mesD[i]); acc += (mesR[i] - mesD[i]); dadosSaldoLine.push(acc); }
+  }
+
+  if(chartEvolucao) chartEvolucao.destroy();
+  chartEvolucao = new Chart(document.getElementById("chartEvolucao"), {
+    type: 'bar',
+    data: {
+      labels: rotulos,
+      datasets: [
+        { type: 'line', label: 'Saldo Acumulado', data: dadosSaldoLine, borderColor: '#03A9F4', borderWidth: 2, fill: false, tension: 0.4 },
+        { type: 'bar', label: 'Receitas', data: dadosR, backgroundColor: 'rgba(76, 175, 80, 0.7)' },
+        { type: 'bar', label: 'Despesas', data: dadosD, backgroundColor: 'rgba(244, 67, 54, 0.7)' }
+      ]
+    },
+    options: { responsive: true, plugins: { legend: { labels: { color: '#ccc' } } }, scales: { y: { ticks: { color: "#888" }, grid: { color: "#333" } }, x: { ticks: { color: "#888" } } } }
+  });
+
+  const gastosCat = {};
+  transacoes.forEach(t => { if(getTipoReal(t) === 'despesa') gastosCat[t.categoria] = (gastosCat[t.categoria] || 0) + t.valor; });
+  const catKeys = Object.keys(gastosCat).sort((a,b) => gastosCat[b] - gastosCat[a]).slice(0, 7);
+  
+  if(chartCategorias) chartCategorias.destroy();
+  chartCategorias = new Chart(document.getElementById("chartCategorias"), {
+    type: 'bar',
+    data: {
+      labels: catKeys.length ? catKeys : ['Sem dados'],
+      datasets: [{ label: 'Gasto R$', data: catKeys.length ? catKeys.map(k => gastosCat[k]) : [0], backgroundColor: '#F44336', borderRadius: 4 }]
+    },
+    options: { indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: { ticks: { color: "#888" }, grid: { color: "#333" } }, y: { ticks: { color: "#ccc" } } } }
+  });
+}
+
+// ---------- FORMULÁRIOS ----------
+function abrirFormulario() {
+  document.getElementById("formulario").style.display="block";
+  document.getElementById("input-id").value = "";
+  document.getElementById("input-data").value = new Date().toISOString().split('T')[0];
+  document.getElementById("input-tipo").value = "despesa";
+  atualizarCategoriasForm();
+}
+function fecharFormulario() { document.getElementById("formulario").style.display="none"; }
+function atualizarCategoriasForm() {
+  const tipoSelecionado = document.getElementById("input-tipo").value;
+  const sel = document.getElementById("input-categoria");
+  sel.innerHTML = "";
+  Object.keys(dados.categorias).forEach(nome => {
+    if(dados.categorias[nome].tipo === tipoSelecionado) sel.innerHTML += `<option value="${nome}">${nome}</option>`;
+  });
+}
+function salvarLancamento() {
+  const tipo = document.getElementById("input-tipo").value;
+  const categoria = document.getElementById("input-categoria").value;
+  const valor = parseFloat(document.getElementById("input-valor").value);
+  const data = document.getElementById("input-data").value;
+  const descricao = document.getElementById("input-descricao").value;
+  if(!categoria || isNaN(valor) || !data) { alert("Preencha todos os campos!"); return; }
+  
+  dados.transacoes.push({ id: Date.now(), tipo, categoria, descricao, valor, data });
+  salvarDados();
+  fecharFormulario();
   atualizarTudo();
 }
 
-// ---------- INICIALIZAÇÃO ----------
+function abrirModalCategoria() { document.getElementById("modal-categoria").style.display="block"; }
+function fecharModalCategoria() { document.getElementById("modal-categoria").style.display="none"; }
+function salvarNovaCategoria() {
+  const nome = document.getElementById("cat-nome").value;
+  const tipo = document.getElementById("cat-tipo").value;
+  const icone = document.getElementById("cat-icone").value;
+  if(!nome) return;
+  dados.categorias[nome] = { icone, tipo };
+  salvarDados();
+  fecharModalCategoria();
+}
+
+// ---------- ROTEAMENTO GERAL ----------
+function atualizarTudo() {
+  const tela = document.querySelector(".tela.ativa").id;
+  if(tela === "tela-dashboard") renderizarDashboard();
+  if(tela === "tela-receitas") renderizarTransacoes();
+  if(tela === "tela-orcamentos") renderizarCategorias();
+  if(tela === "tela-ia") renderizarIA();
+  if(tela === "tela-graficos") renderizarGraficos();
+  if(tela === "tela-patrimonio") renderizarPatrimonio();
+  if(tela === "tela-config") renderizarConfig();
+}
+
+// Inicialização: a primeira tela será o Painel, portanto FAB fica invisível
+mostrarTela('dashboard');
 atualizarLabelPeriodo();
-atualizarTudo();
 </script>
 </body>
 </html>
