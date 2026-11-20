@@ -177,7 +177,7 @@ input:focus,select:focus{outline:2px solid var(--primary);}
   <div class="lista" id="lista-transacoes"></div>
 </div>
 
-<!-- ORÇAMENTOS & TENDÊNCIAS (MACRO) -->
+<!-- ORÇAMENTOS -->
 <div id="tela-orcamentos" class="tela">
   <h2 class="titulo">Orçamentos & Tendências</h2>
   <div id="lista-categorias-progresso"></div>
@@ -273,7 +273,6 @@ input:focus,select:focus{outline:2px solid var(--primary);}
     
     <button class="btn-sucesso" onclick="exportarBackupCSV()"><i class="fa-solid fa-file-export"></i> Exportar Histórico (CSV)</button>
     
-    <!-- Botão de Importação -->
     <button class="btn-importar" onclick="document.getElementById('file-import-app').click()">
       <i class="fa-solid fa-file-import"></i> Importar Histórico (CSV)
     </button>
@@ -387,7 +386,8 @@ let chartWEvolucao = null; let chartWComposicao = null; let chartWAportes = null
 function carregarDados() {
   let db = { categorias: {...CATEGORIAS_PADRAO}, transacoes: [], orcamentosMensais: {}, ajustePatrimonialManual: 0, atalhos: [], recorrentes: [] };
   try {
-    const salvo = localStorage.getItem(CHAVE_DADOS) || localStorage.getItem("controleLuiz_dados_v6") || localStorage.getItem("controleLuiz_dados_v5");
+    // INCLUÍDA A LEITURA DA V3 AQUI PARA RECUPERAR SEUS DADOS ANTIGOS
+    const salvo = localStorage.getItem(CHAVE_DADOS) || localStorage.getItem("controleLuiz_dados_v6") || localStorage.getItem("controleLuiz_dados_v5") || localStorage.getItem("controleLuiz_dados_v3");
     if(salvo) {
       const parsed = JSON.parse(salvo);
       if(parsed.categorias) {
@@ -413,7 +413,8 @@ function processarRecorrentesAutomáticas() {
   const hoje = new Date(), mesRef = `${hoje.getFullYear()}-${String(hoje.getMonth()+1).padStart(2,'0')}`, diaAtual = hoje.getDate();
   let salvouAlgo = false;
   dados.recorrentes.forEach(rec => {
-    if (!dados.transacoes.find(t => t.idRecorrente === rec.id && t.mesRef === mesRef) && diaAtual >= rec.dia) {
+    const jaLancou = dados.transacoes.find(t => t.idRecorrente === rec.id && t.mesRef === mesRef);
+    if (!jaLancou && diaAtual >= rec.dia) {
       dados.transacoes.push({ id: Date.now() + Math.floor(Math.random()*10000), tipo: 'despesa', categoria: rec.categoria, descricao: rec.descricao + ' (Auto)', valor: rec.valor, data: `${mesRef}-${String(rec.dia).padStart(2,'0')}`, idRecorrente: rec.id, mesRef: mesRef });
       salvouAlgo = true;
     }
@@ -503,6 +504,7 @@ function lancarRapido(cat, desc, val) {
 
 function obterOrcamentoCategoria(nome) { const chave = obterChavePeriodo(); return (dados.orcamentosMensais[chave] && dados.orcamentosMensais[chave][nome] !== undefined) ? dados.orcamentosMensais[chave][nome] : (dados.categorias[nome]?.orcamento || 0); }
 function gastoPorCategoria(nome, transacoes) { return transacoes.filter(t => t.categoria === nome && getTipoReal(t) === "despesa").reduce((s, t) => s + t.valor, 0); }
+
 function renderizarCategorias() {
   const lista = document.getElementById("lista-categorias-progresso"); lista.innerHTML = "";
   const transacoes = filtrarTransacoesDoPeriodo(), transacoesAnteriores = filtrarTransacoesDoPeriodoAnterior(), mult = getMultiplicadorOrcamento();
@@ -530,6 +532,7 @@ function renderizarCategorias() {
                   else badgeTendencia = `<span class="trend-neutral">= 0%</span>`;
               } else if (gastoAtual > 0) badgeTendencia = `<span class="trend-up"><i class="fa-solid fa-arrow-up"></i> +100%</span>`;
           }
+
           const div = document.createElement("div"); div.className = "item";
           div.innerHTML = `<div class="item-top"><div class="item-left"><i class="fa-solid ${cat.icone}"></i><span>${nome}</span></div><b>${formatarMoeda(gastoAtual)} / ${orcamento > 0 ? formatarMoeda(orcamento) : 'S/ Limite'}</b></div><div class="progress"><div class="${cor}" style="width:${pct}%;"></div></div><div class="info"><span>${info}</span> <span title="Comparado ao período anterior">Tendência: ${badgeTendencia}</span></div>`;
           lista.appendChild(div);
@@ -550,6 +553,7 @@ function renderizarTransacoes() {
       if(valCat !== 'todas' && t.categoria !== valCat) return false;
       return true;
   });
+
   const resumo = calcularResumo(tFiltroLocal);
   document.getElementById("resumo-extrato-container").innerHTML = `<div style="color:var(--receita)">Entradas<br>${formatarMoeda(resumo.receitas)}</div><div style="color:var(--despesa)">Saídas<br>${formatarMoeda(resumo.despesas)}</div><div style="color:${resumo.saldo >= 0 ? 'var(--saldo)' : 'var(--despesa)'}">Saldo<br>${formatarMoeda(resumo.saldo)}</div>`;
   lista.innerHTML = "";
@@ -656,13 +660,11 @@ function importarBackupCSV(event) {
     reader.onload = function(e) {
         const lines = e.target.result.split('\n');
         let importados = 0;
-        // Pula o cabeçalho (i=1)
         for(let i=1; i<lines.length; i++) {
             if(lines[i].trim() === '') continue;
             const cols = lines[i].split(';');
             if(cols.length >= 6) {
                 const id = parseInt(cols[0]);
-                // Garante que não duplique verificando ID existente
                 if(!dados.transacoes.find(t => t.id === id)) {
                     dados.transacoes.push({
                         id: id || (Date.now() + i),
@@ -679,7 +681,7 @@ function importarBackupCSV(event) {
         salvarDados();
         atualizarTudo();
         alert(`${importados} transações importadas com sucesso do backup!`);
-        document.getElementById('file-import-app').value = ''; // Reseta input
+        document.getElementById('file-import-app').value = ''; 
     };
     reader.readAsText(file);
 }
@@ -687,7 +689,7 @@ function importarBackupCSV(event) {
 function resetarDados() {
     if(confirm("ATENÇÃO EXTREMA: Deseja realmente APAGAR TODOS os dados? Esta ação não tem volta.")) {
         localStorage.removeItem(CHAVE_DADOS);
-        dados = carregarDados(); // Recarrega o estado limpo padrão
+        dados = carregarDados(); 
         dados.transacoes = [];
         salvarDados();
         atualizarTudo();
